@@ -15,7 +15,8 @@ Depends:
     scales,
     rgdal,
     lubridate,
-    move
+    move,
+    marcher
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Suggests: knitr, ggmap, ggtools, marcher
+Suggests: knitr, ggmap, ggtools, 

@@ -3,4 +3,6 @@
 .RData
 .Ruserdata
 .hidden
+.README_cache
+.README_files
 README.rmd

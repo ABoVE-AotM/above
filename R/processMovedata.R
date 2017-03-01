@@ -16,7 +16,7 @@ processMovedata <- function(movedata,
                             proj4 = NULL,
                             dailymean = TRUE){
   
-  if(inherits(movedata, "Move")){
+  if(inherits(movedata, "Move") | inherits(movedata, "MoveStack")){
     if(is.null(proj4)) proj4 <- as.character(movedata@proj4string)
     movedata <- as.data.frame(movedata)
   } else if(is.null(proj4)) {
@@ -28,7 +28,7 @@ processMovedata <- function(movedata,
   names(movedata)[names(movedata) == idcolumn] <- "id"
 
   if(!("utm.easting" %in% names(movedata))){
-    xy <- with(movedata, project(cbind(location_long, location_lat), proj4))
+    xy <- project(cbind(movedata$location_long, movedata$location_lat), proj4)
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
   } else movedata <- rename(utm.easting = "x", utm.northing = "y")
@@ -44,10 +44,9 @@ processMovedata <- function(movedata,
   
   if(dailymean)
     movedata.processed <-   ddply(movedata.processed, c("id", "day", "day.date"), summarize, 
-          x = mean(x), y = mean(y),  
-          lon = mean(lon), 
-          lat = mean(lat), 
-          time = mean(time))
-  
+                                  time = mean(time),
+                                  lon = mean(lon), 
+                                  lat = mean(lat), 
+                                  x = mean(x), y = mean(y))
   return(movedata.processed)
 }
