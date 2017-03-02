@@ -39,5 +39,5 @@ fitMultiMigration <- function(data, span1, span2, plot = TRUE){
 
 finddate <- function(t, year){
   day0 <- ymd(paste(year, 1, 1))
-  day0 + ddays(round(t))
+  as.POSIXct(day0 + ddays(round(t)))
 }
