@@ -9,7 +9,7 @@
 plot.movetrack <- function(movetrack=NULL, id = NULL, time, x, y=NULL, layout = NULL, auto.par = NULL,  ...)
 {
  if(is.null(id)) id <- movetrack$id[1]
-  
+ layout(cbind(1:1,2:3))
  par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
  with(subset(movetrack, id == id), {
   plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5, ...)
