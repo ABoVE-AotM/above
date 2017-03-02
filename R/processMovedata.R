@@ -12,13 +12,13 @@
 
 
 processMovedata <- function(movedata, 
-                            idcolumn = "individual.local.identifier",
+                            idcolumn = "individual_id",
                             proj4 = NULL,
                             dailymean = TRUE){
   
   if(inherits(movedata, "Move") | inherits(movedata, "MoveStack")){
     if(is.null(proj4)) proj4 <- as.character(movedata@proj4string)
-    movedata <- as.data.frame(movedata)
+    movedata <- as(movedata, "data.frame")
   } else if(is.null(proj4)) {
     lon.center <- round(mean(range(movedata$location_long)))
     lat.center <- round(mean(range(movedata$location_lat)))
@@ -48,5 +48,8 @@ processMovedata <- function(movedata,
                                   lon = mean(lon), 
                                   lat = mean(lat), 
                                   x = mean(x), y = mean(y))
+  
+  class(movedata.processed) <- c("movetrack", "data.frame")
+  
   return(movedata.processed)
 }

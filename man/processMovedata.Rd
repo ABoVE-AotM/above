@@ -4,8 +4,8 @@
 \alias{processMovedata}
 \title{process Move data}
 \usage{
-processMovedata(movedata, idcolumn = "individual.local.identifier",
-  proj4 = NULL, dailymean = TRUE)
+processMovedata(movedata, idcolumn = "individual_id", proj4 = NULL,
+  dailymean = TRUE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
@@ -26,16 +26,20 @@ Transforms raw-ish move data into a daily averaged move data.
 ### Enter Login and Password information for Movebank
 
 ## Not run: 
-# login <- "somethingsecret"
-# password <- "somethingsecret"
+# login <- movebankLogin(username="xxxx", password="xxxx")
 
 ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", animalName="37307a", login=login) #one bird, one deployment
 ge1.dailymean <- processMovedata(ge1,  id = "deployment_id")
 
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 # one bird, three deployments
-ge2.dailymean <- processMovedata(ge1,  id = "deployment_id")
+ge2.dailymean <- processMovedata(ge2,  id = "deployment_id")
 
+# a few simple methods:
+plot(ge2.dailymean)
 
+## Not run:
+# load("./hidden/ge.rda")
 ge.dailymean <- processMovedata(ge)
 }
+

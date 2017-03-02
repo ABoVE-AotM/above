@@ -14,3 +14,4 @@ plotMultiMigration(data, M.summary, ...)
 \description{
 This function plots a multiple migration fit using the summary output of \code{\link{fitMultiMigration}}.
 }
+
