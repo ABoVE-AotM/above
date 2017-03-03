@@ -3,10 +3,15 @@
 
 
 ```{r Render, echo =FALSE,  eval=FALSE, include = FALSE}
-# need to run this code to generate a GOOD README.md
-render("README.rmd", output_dir = "./hidden", intermediates_dir = ".", clean = FALSE)
-shell("move README.knit.md README.md")
+require(knitr)
+knit("README.rmd")
 ```
+
+### To-Do:
+
+- Improve multimigration (EG)
+- Add step-selection functions (PM)
+- Annotation code
 
 
 ```{r setup, include=FALSE}
@@ -18,7 +23,8 @@ This R package will collaboratively help participants of the Animals on the Move
 For now, it contains: 
 
 1. preprocesseing [movebank.org]() functions to get daily means
-2. functions for multi-migration analysis
+2. some convenient methods (`summary`, `plot`, `map.track`) to work with movetrack's 
+3. functions for multi-migration analysis
 
 Example below:
 
@@ -30,7 +36,7 @@ From GitHub, you need to install first the [`marcher`](https://github.com/EliGur
 ```{r, eval = FALSE}
 require(devtools)
 install_github("EliGurarie/marcher")
-install_github("EliGurarie/above")
+install_github("ABoVE-AotM/above")
 ```
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}

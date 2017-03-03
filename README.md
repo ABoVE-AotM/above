@@ -4,15 +4,25 @@
 
 
 
+### To-Do:
+
+- Improve multimigration (EG)
+- Add step-selection functions (PM)
+- Annotation code
+
+
+
+
 This R package will collaboratively help participants of the Animals on the Move subproject of the Arctic Boreal Vulnerability Experiment (above) share code for analysis of animal movements and migrations. 
 
 For now, it contains: 
 
-1. preprocesseing [movebank.org]() functions to get a simpler data frame (and daily means) in the form of an (invented) `movetrack` object.
-2. some convenient methods (`summary`, `plot`, `map.track`) to work with `movetrack`'s
-2. functions for multi-migration analysis
+1. preprocesseing [movebank.org]() functions to get daily means
+2. some convenient methods (`summary`, `plot`, `map.track`) to work with movetrack's 
+3. functions for multi-migration analysis
 
 Example below:
+
 
 ### Install package
 
@@ -25,6 +35,9 @@ install_github("EliGurarie/marcher")
 install_github("ABoVE-AotM/above")
 ```
 
+
+
+
 ### Loading eagle data
 
 ABoVE members with access to some golden eagle data can load it using 
@@ -33,6 +46,8 @@ ABoVE members with access to some golden eagle data can load it using
 ```r
 login <- movebankLogin(username = "somethingsecret", password = "somethingsecret")
 ```
+
+
 
 Load a few datasets:
 
@@ -44,8 +59,8 @@ ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs
 
 
 
-These are `Move` objects, but they're slightly different:
 
+These are `Move` objects, but they're slightly different:
 
 ```r
 is(ge1)
@@ -59,7 +74,6 @@ is(ge1)
 ## [9] "SpatialVector"
 ```
 
-
 ```r
 is(ge2)
 ```
@@ -72,16 +86,13 @@ is(ge2)
 ##  [9] "Spatial"                "SpatialVector"
 ```
 
-The second one is a "Stack" of three eagles
-
 ### Processing data
 
-The central function is  `processMovedata`, which simlpifies a Movebank object to a simpler structure: 'id', 'time', 'lon', 'lat', 'x' and 'y' (UTM locations).   The output is a `movetrack` object:
+For migration analysis we simplify (and get daily averages) using the `processMovedata` function, which reduces the data to daily average locations (in latitude, longited and x and y):
 
 
 ```r
 ge1.simple <- processMovedata(ge1, idcolumn = "deployment_id")
-ge2.simple <- processMovedata(ge2, idcolumn = "deployment_id")
 head(ge1.simple)
 ```
 
@@ -102,37 +113,59 @@ head(ge1.simple)
 ## 6 -1.859523 0.4804891
 ```
 
-Compare:
+Note that `x` and `y` are UTM coordinates - you can either provide a `proj4` projection string or, by default, it will pick the zone of the midpoint. 
 
-```r
-summary(ge1.simple)
-```
-
-```
-##          id   n               start duration   dt.median
-## 1 171299043 165 2003-10-06 15:29:54 390 days 57.09 hours
-```
-
-```r
-summary(ge2.simple)
-```
-
-```
-##          id   n               start duration    dt.median
-## 1 196430584 138 1993-01-07 21:58:39 217 days  37.97 hours
-## 2 196430597  94 1994-01-27 22:40:46 105 days  27.10 hours
-## 3 196430599  56 1995-12-10 02:32:49 338 days 147.29 hours
-```
-
-The `x` and `y` are UTM coordinates - you can either provide a `proj4` projection string, it will take it from the orginal data or it will pick the UTM zone of the midpoint. 
-
-A plotting function and a mapping function are worth checking out:
+A `scan.track` (from `marcher`):
 
 
 ```r
-plot(ge1.simple)
-map.track(ge2.simple, zoom = 3)
+with(ge1.simple, scan.track(time = time, x = x, y = y))
 ```
+
+
+For the second data set (`ge2`) there are three eagles and a different unique identifier. 
+
+
+```r
+ge2.simple <- processMovedata(ge2, idcolumn = "deployment_id")
+head(ge2.simple)
+```
+
+```
+##          id day            day.date                time       lon    lat
+## 1 196430584   6 1993-01-07 12:00:00 1993-01-07 21:58:39 -116.0230 43.140
+## 2 196430584   7 1993-01-08 12:00:00 1993-01-08 23:28:22 -115.9960 43.083
+## 3 196430584   8 1993-01-09 12:00:00 1993-01-09 01:00:42 -115.9090 43.142
+## 4 196430584   9 1993-01-10 12:00:00 1993-01-10 13:03:26 -116.1525 43.132
+## 5 196430584  10 1993-01-11 12:00:00 1993-01-11 22:02:01 -116.0565 43.120
+## 6 196430584  12 1993-01-13 12:00:00 1993-01-13 02:01:48 -116.0080 43.069
+##           x         y
+## 1 -2.024983 0.7529350
+## 2 -2.024512 0.7519402
+## 3 -2.022994 0.7529699
+## 4 -2.027244 0.7527954
+## 5 -2.025568 0.7525860
+## 6 -2.024722 0.7516959
+```
+
+```r
+table(ge2.simple$id)
+```
+
+```
+## 
+## 196430584 196430597 196430599 
+##       138        94        56
+```
+
+We can `scan.track` the first one:
+
+
+```r
+with(subset(ge2.simple, id == "196430584"), scan.track(x = x, y = y, time = time))
+```
+
+And we see a simple straight one-time migration in these data. 
 
 ### Migration analysis
 
