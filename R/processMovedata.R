@@ -3,7 +3,7 @@
 ##' Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
 ##' 
 ##' @param movedata movement data - can be a \code{Move} object (or stack) from movebank
-##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual.local.identifier" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!
+##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!
 ##' @param proj4 the projection for conversion to UTM.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.
 ##' @param dailymean whether or not to compute the daily mean - useful for the migration analysis
 ##' 
