@@ -16,4 +16,3 @@ map.track(movetrack, zoom = 6, ...)
 \description{
 This is a quick wrapper around the \code{\link{ggmap}} function that plots a movetrack object (including with multiple individuals) and
 }
-

@@ -21,4 +21,3 @@ a data frame with the date, duration, estimated ranging areas of each of the mig
 \description{
 This function allows for the analysis of multiple migration in a single movement time series.
 }
-

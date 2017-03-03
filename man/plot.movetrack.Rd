@@ -15,4 +15,3 @@ plot.movetrack(movetrack = NULL, id = NULL, time, x, y = NULL,
 \description{
 Plotting x-y, time-x, time-y scan of a track.  This function will take x, y, and time coordinates or a \code{track} class object
 }
-

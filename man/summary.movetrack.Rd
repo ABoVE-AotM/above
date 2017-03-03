@@ -15,4 +15,3 @@ a data frame with a column of id's, number of observations, start time, duration
 \description{
 Summary method for a movetrack
 }
-

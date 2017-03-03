@@ -3,8 +3,8 @@
 ## Not run: 
 # login <- movebankLogin(username="xxxx", password="xxxx")
 
-ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", animalName="37307a", login=login) #one bird, one deployment
-ge1.dailymean <- processMovedata(ge1,  id = "deployment_id")
+ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login) #one bird, one deployment
+ge1.dailymean <- processMovedata(ge1,  id = "individual_id")
 
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 # one bird, three deployments

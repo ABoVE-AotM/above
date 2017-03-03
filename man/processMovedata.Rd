@@ -17,10 +17,10 @@ processMovedata(movedata, idcolumn = "individual_id", proj4 = NULL,
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis}
 }
 \value{
-
+Returns a data frame with columns "id", "x", "y", (UTM easting/northing), "lat", "lon", "time", "day" (day since Jan 1 of first year), "day.time".
 }
 \description{
-Transforms raw-ish move data into a daily averaged move data.
+Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
 }
 \examples{
 ### Enter Login and Password information for Movebank
@@ -42,4 +42,6 @@ plot(ge2.dailymean)
 # load("./hidden/ge.rda")
 ge.dailymean <- processMovedata(ge)
 }
-
+\seealso{
+\link{map.track}, \link{plot.movetrack}
+}
