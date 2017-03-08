@@ -1,6 +1,7 @@
 Package: above
 Type: Package
-Title: Functions and methods for the Animals on the Move project of the Arctic Boreal Vulnerability Experiment (ABoVE - NASA).
+Title: Functions and methods for the Animals on the Move project of the Arctic
+    Boreal Vulnerability Experiment (ABoVE - NASA).
 Version: 0.11
 Date: 2016-11-22
 Author: Elie Gurarie and other collaborators
@@ -16,7 +17,9 @@ Depends:
     rgdal,
     lubridate,
     move,
-    marcher
+    marcher,
+    ggmap
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Suggests: knitr, ggmap, ggtools, 
+Suggests:
+    knitr
