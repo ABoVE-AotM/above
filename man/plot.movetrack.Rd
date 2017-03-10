@@ -4,7 +4,7 @@
 \alias{plot.movetrack}
 \title{Quick plot of a track (against x-y-time)}
 \usage{
-plot.movetrack(movetrack = NULL, id = NULL, time, x, y = NULL,
+\method{plot}{movetrack}(movetrack = NULL, id = NULL, time, x, y = NULL,
   layout = NULL, auto.par = NULL, ...)
 }
 \arguments{
