@@ -8,7 +8,7 @@ Author: Elie Gurarie and other collaborators
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
-Imports:
+Depends:
     MASS,
     nlme,
     magrittr,

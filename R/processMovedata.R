@@ -17,7 +17,7 @@
 processMovedata <- function(movedata, 
                             idcolumn = "individual_id",
                             proj4 = NULL,
-                            dailymean = TRUE,
+                            dailymean = FALSE,
                             keepCols = NULL){
   
   if(inherits(movedata, "Move") | inherits(movedata, "MoveStack")){

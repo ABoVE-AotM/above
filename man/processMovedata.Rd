@@ -5,7 +5,7 @@
 \title{process Move data}
 \usage{
 processMovedata(movedata, idcolumn = "individual_id", proj4 = NULL,
-  dailymean = TRUE, keepCols = NULL)
+  dailymean = FALSE, keepCols = NULL)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}

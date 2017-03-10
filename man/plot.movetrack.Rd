@@ -4,11 +4,15 @@
 \alias{plot.movetrack}
 \title{Quick plot of a track (against x-y-time)}
 \usage{
-\method{plot}{movetrack}(movetrack = NULL, id = NULL, time, x, y = NULL,
-  layout = NULL, auto.par = NULL, ...)
+plot.movetrack(movetrack = NULL, id = NULL, subset = NULL, time, x,
+  y = NULL, layout = NULL, auto.par = NULL, ...)
 }
 \arguments{
 \item{movetrack}{a \code{movetrack} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}
+
+\item{id}{id of animal to plot.  If NULL - use subset or first animal.}
+
+\item{subset}{what portion of data to plot.  If null, use "id" or first animal.}
 
 \item{...}{options to be passed to plot functions}
 }
