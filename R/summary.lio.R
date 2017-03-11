@@ -8,7 +8,7 @@
 ##' 
 
 summary.lio <- function(lio) {
-  if (class(lio) != 'lio')
+  if (class(lio)[1] != 'lio')
     stop("Input argument must be of class 'lio'.")
   
   o <- lapply(lio, function(x) x$cv)

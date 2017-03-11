@@ -9,8 +9,8 @@
 ##' @return Plots the fit of the with-held individual (test data, observed fit) again the remaining sampled individuals (training data, predicted fit). a data frame with median cross-validation metrics for all individuals in a leave-individual-out object.
 ##' 
 
-plot.lio <- function(lio, numpoints) {
-  if (class(lio) != 'lio')
+plot.lio <- function(lio, numpoints = Inf) {
+  if (class(lio)[1] != 'lio')
     stop("Input argument must be of class 'lio'.")
   
   xmin <- min(unlist(lapply(lio, function (x) min(x$values[, 1]))))
