@@ -10,6 +10,8 @@ Description: ...
 License: Unlimited
 Depends:
     MASS,
+    parallel,
+    survival,
     nlme,
     magrittr,
     plyr,
