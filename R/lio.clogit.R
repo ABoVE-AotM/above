@@ -12,11 +12,8 @@
 ##' @param ncores if inPar = TRUE, ncores will define the number of cpu cores to use.
 ##' 
 ##' @return Returns a list of lists indexed by individual.  Nested within each individual's element is a second list containing the fitted and observed values (obj[[i]]$values) and cross-validation metrics (obj[[i]]$cv).
-##' @seealso \link{processMovedata}, \link{getPseudoAbsences}
+##' @seealso \link{processMovedata}
 ##' 
-
-require(survival)
-require(parallel)
 
 # LEAVE-ONE-OUT VALIDATION 
 lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'AnimalID', 
