@@ -5,16 +5,18 @@
 \title{process Move data}
 \usage{
 processMovedata(movedata, idcolumn = "individual_id", proj4 = NULL,
-  dailymean = TRUE)
+  dailymean = FALSE, keepCols = NULL)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
 
-\item{idcolumn}{name of the id column - depends on properties of the movebank data.  The default "individual.local.identifier" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!}
+\item{idcolumn}{name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!}
 
 \item{proj4}{the projection for conversion to UTM.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.}
 
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis}
+
+\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
 }
 \value{
 Returns a data frame with columns "id", "x", "y", (UTM easting/northing), "lat", "lon", "time", "day" (day since Jan 1 of first year), "day.time".
@@ -28,8 +30,8 @@ Transforms a movebank object into an (optionally) daily averaged simplified data
 ## Not run: 
 # login <- movebankLogin(username="xxxx", password="xxxx")
 
-ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", animalName="37307a", login=login) #one bird, one deployment
-ge1.dailymean <- processMovedata(ge1,  id = "deployment_id")
+ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login) #one bird, one deployment
+ge1.dailymean <- processMovedata(ge1,  id = "individual_id")
 
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 # one bird, three deployments
