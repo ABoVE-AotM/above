@@ -4,7 +4,7 @@
 \alias{plot.lio}
 \title{Plot lio}
 \usage{
-plot.lio(lio, numpoints)
+plot.lio(lio, numpoints = Inf)
 }
 \arguments{
 \item{lio}{An 'lio' class object.}
