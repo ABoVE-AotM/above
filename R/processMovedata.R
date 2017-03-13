@@ -16,7 +16,7 @@
 
 processMovedata <- function(movedata, 
                             idcolumn = "individual_id",
-                            proj4 = NULL,
+                            proj4 = NULL, projTo = NULL,
                             dailymean = FALSE,
                             keepCols = NULL){
   
@@ -36,13 +36,15 @@ processMovedata <- function(movedata,
     movedata <- dplyr::rename(movedata, id_movebank = id)    
     names(movedata)[names(movedata) == idcolumn] <- "id"
   }  else names(movedata)[names(movedata) == idcolumn] <- "id"
-  
 
-  if(!("utm.easting" %in% names(movedata))){
-    xy <- project(cbind(movedata$location_long, movedata$location_lat), proj4)
+  if(!is.null(projTo)){
+    xy <- project(cbind(movedata$location_long, movedata$location_lat), projTo)
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
-  } else movedata <- rename(utm.easting = "x", utm.northing = "y")
+  } else {
+      movedata$x <- movedata$location_long
+      movedata$y <- movedata$location_lat
+  }
   
   movedata.setup <- (mutate(movedata, id = factor(id), time = ymd_hms(timestamp)) %>% 
     ddply("id", function(df){
