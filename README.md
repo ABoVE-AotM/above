@@ -6,6 +6,7 @@
 
 #### To-Do:
 
+- Include simulated data for quick loading and examples 
 - Improve multimigration (EG)
 - Add step-selection functions (PM)
 - Annotation code
@@ -51,6 +52,14 @@ login <- movebankLogin(username = "somethingsecret", password = "somethingsecret
 ```
 
 
+```
+## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
+## './hidden/movebanklogin.rda', probable reason 'No such file or directory'
+```
+
+```
+## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
+```
 
 Load a few datasets:
 
@@ -61,6 +70,14 @@ ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs
 ```
 
 
+```
+## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
+## './hidden/eagles.rda', probable reason 'No such file or directory'
+```
+
+```
+## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
+```
 
 
 These are `Move` objects, but they're slightly different:
@@ -70,11 +87,7 @@ is(ge1)
 ```
 
 ```
-## [1] "Move"                   ".MoveTrackSingle"      
-## [3] ".MoveGeneral"           ".MoveTrack"            
-## [5] ".unUsedRecords"         "SpatialPointsDataFrame"
-## [7] "SpatialPoints"          "Spatial"               
-## [9] "SpatialVector"
+## Error in is(ge1): object 'ge1' not found
 ```
 
 ```r
@@ -82,11 +95,7 @@ is(ge2)
 ```
 
 ```
-##  [1] "MoveStack"              ".MoveTrackStack"       
-##  [3] ".MoveGeneral"           ".MoveTrack"            
-##  [5] ".unUsedRecordsStack"    "SpatialPointsDataFrame"
-##  [7] ".unUsedRecords"         "SpatialPoints"         
-##  [9] "Spatial"                "SpatialVector"
+## Error in is(ge2): object 'ge2' not found
 ```
 
 
@@ -98,24 +107,18 @@ For migration analysis we simplify (and get daily averages) using the `processMo
 
 ```r
 ge1.simple <- processMovedata(ge1, idcolumn = "deployment_id")
+```
+
+```
+## Error in inherits(movedata, "Move"): object 'ge1' not found
+```
+
+```r
 head(ge1.simple)
 ```
 
 ```
-##          id day            day.date                time       lon      lat
-## 1 171299043 278 2003-10-06 12:00:00 2003-10-06 15:29:54 -106.3055 34.36525
-## 2 171299043 280 2003-10-08 12:00:00 2003-10-08 23:44:41 -105.9220 31.71000
-## 3 171299043 281 2003-10-09 12:00:00 2003-10-09 01:35:52 -105.8807 31.70867
-## 4 171299043 283 2003-10-11 12:00:00 2003-10-11 04:49:55 -106.3147 30.90686
-## 5 171299043 285 2003-10-13 12:00:00 2003-10-13 12:49:15 -106.5515 29.09225
-## 6 171299043 287 2003-10-15 12:00:00 2003-10-15 17:48:17 -106.5428 27.53000
-##           x         y
-## 1 -1.855381 0.5997868
-## 2 -1.848688 0.5534439
-## 3 -1.847966 0.5534206
-## 4 -1.855542 0.5394264
-## 5 -1.859674 0.5077555
-## 6 -1.859523 0.4804891
+## Error in head(ge1.simple): object 'ge1.simple' not found
 ```
 
 This is a `movebank` object, which has some convenient methods:
@@ -126,8 +129,7 @@ summary(ge1.simple)
 ```
 
 ```
-##          id   n               start duration   dt.median
-## 1 171299043 165 2003-10-06 15:29:54 390 days 57.09 hours
+## Error in summary(ge1.simple): object 'ge1.simple' not found
 ```
 
 
@@ -145,14 +147,18 @@ For the second data set (`ge2`) there are three deployments of 1 eagle, each wit
 
 ```r
 ge2.simple <- processMovedata(ge2, idcolumn = "deployment_id")
+```
+
+```
+## Error in inherits(movedata, "Move"): object 'ge2' not found
+```
+
+```r
 summary(ge2.simple)
 ```
 
 ```
-##          id   n               start duration    dt.median
-## 1 196430584 138 1993-01-07 21:58:39 217 days  37.97 hours
-## 2 196430597  94 1994-01-27 22:40:46 105 days  27.10 hours
-## 3 196430599  56 1995-12-10 02:32:49 338 days 147.29 hours
+## Error in summary(ge2.simple): object 'ge2.simple' not found
 ```
 
 And we see a simple straight one-time migration in these data. 

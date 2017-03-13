@@ -9,6 +9,7 @@ knit("README.rmd")
 
 #### To-Do:
 
+- Include simulated data for quick loading and examples 
 - Improve multimigration (EG)
 - Add step-selection functions (PM)
 - Annotation code
