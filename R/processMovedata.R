@@ -88,7 +88,7 @@ processMovedata <- function(movedata,
     ids <- unique(md.processed$id)
     mo <- c()
     for (i in 1:length(unique(ids))) {
-      mi <- subset(md.processed, id = ids[i])
+      mi <- subset(md.processed, id == ids[i])
       mi$z <- mi$x + (0+1i) * mi$x
       z.start <- mi$z[-nrow(mi)]
       z.end <- mi$z[-1]
