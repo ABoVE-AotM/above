@@ -4,22 +4,34 @@
 \alias{processMovedata}
 \title{process Move data}
 \usage{
-processMovedata(movedata, idcolumn = "individual_id", proj4 = NULL,
-  dailymean = FALSE, keepCols = NULL)
+processMovedata(movedata, xyNames = c("location_long", "location_lat"),
+  idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
+  keepCols = NULL, getVT = FALSE, geoDist = FALSE, units = "hour",
+  returnSPDF = TRUE, dailymean = FALSE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
 
 \item{idcolumn}{name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!}
 
-\item{proj4}{the projection for conversion to UTM.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.}
+\item{proj4}{the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.}
 
-\item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis}
+\item{projTo}{a crs string for (re)projecting input data.}
 
 \item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
+
+\item{getVT}{a logical indicating whether or not to estimate trajectory statistics (default = TRUE).}
+
+\item{geoDist}{a logical (default is FALSE) indicating whether or not to estimate distance using geographic coordinates along an ellipsoid (see pointDistance in raster package).}
+
+\item{units}{if getVT = TRUE, a string representing the time units used to define time periods (default = 'hour').}
+
+\item{returnSPDF}{if the returned object should be in a SPDF format.}
+
+\item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
 }
 \value{
-Returns a data frame with columns "id", "x", "y", (UTM easting/northing), "lat", "lon", "time", "day" (day since Jan 1 of first year), "day.time".
+Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time".
 }
 \description{
 Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
@@ -30,20 +42,30 @@ Transforms a movebank object into an (optionally) daily averaged simplified data
 ## Not run: 
 # login <- movebankLogin(username="xxxx", password="xxxx")
 
-ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login) #one bird, one deployment
-ge1.dailymean <- processMovedata(ge1,  id = "individual_id")
+# Pull data from movebank
+ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login)     #multiple birds
 
-ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
+# Estimate daily mean locations
+ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE, getVT = TRUE, geoDist = FALSE)
+
+# Include trajectory statistics
+ge1.traj <- processMovedata(ge1,  id = "individual_id", getVT = TRUE)
+
 # one bird, three deployments
-ge2.dailymean <- processMovedata(ge2,  id = "deployment_id")
+ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
-# a few simple methods:
+# Estimate daily mean locations
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, geoDist = FALSE)
+
+# Plot daily movements (currently only displays 1 individual)
 plot(ge2.dailymean)
 
-## Not run:
-# load("./hidden/ge.rda")
-ge.dailymean <- processMovedata(ge)
+# Return a SpatialPointsDataFrame
+ge2.spdf <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, returnSPDF = T)
+
+# Include trajectory statistics
+ge2.traj <- processMovedata(ge2,  id = "individual_id", getVT = TRUE)
 }
 \seealso{
-\link{map.track}, \link{plot.movetrack}
+\link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
 }
