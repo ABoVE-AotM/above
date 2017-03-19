@@ -8,14 +8,27 @@
 ##' @param plot Whether or not to visualize the output with \code{\link{plotMultimigrationFit}}
 ##' @export
 ##' 
-##' @return a data frame with the date, duration, estimated ranging areas of each of the migrations.  
+##' @return a data frame with the date, duration, estimated ranging areas of each of the migrations.
+##' @example ./examples/example3.r  
 
-fitMultiMigration <- function(data, span1, span2, plot = TRUE){
+setGeneric("fitMultiMigration", function(data, span1, span2, plot = TRUE)
+  standardGeneric("fitMultiMigration"))
+
+setMethod(f="fitMultiMigration", 
+          signature=c(data='trackSPDF'),
+          definition = function(data, span1, span2, plot){ 
+            data <- data@data 
+            callGeneric()
+          })
+
+setMethod(f="fitMultiMigration", 
+          signature=c(data = 'track'),
+          definition = function(data, span1, span2, plot){
   id <- data$id[1]
   fits <- list()
   for(i in 1:length(span1)){
-    myfit <- try(with(subset(me, day >= span1[i] & day <= span2[i]), 
-                      estimate.shift(T = day, X = x/1e3, Y = y/1e3, model = "WN")))
+    myfit <- try(with(subset(data, day >= span1[i] & day <= span2[i]), 
+                      estimate_shift(T = day, X = x/1e3, Y = y/1e3, model = "WN")))
     fits[[length(fits)+1]] <- list(span = c(span1 + span2), fit = myfit)
   }
   names(fits) <- paste0("M", 1:length(span1))
@@ -32,10 +45,9 @@ fitMultiMigration <- function(data, span1, span2, plot = TRUE){
                                    month = month(t1), 
                                    year = year(t1), 
                                    season = ifelse(month < 6, "spring", "fall")))
-  if(plot)	plotMultimigrationFit(data, M.summary)	
+  if(plot)	plotMultiMigration(data, M.summary)	
   return(M.summary)
-}
-
+})
 
 finddate <- function(t, year){
   day0 <- ymd(paste(year, 1, 1))
