@@ -18,6 +18,7 @@ setMethod(f="fitMultiMigration",
           signature=c(data='trackSPDF'),
           definition = function(data, span1, span2, plot){ 
             data <- data@data 
+            class(data) <- c('track', 'data.frame')
             callGeneric()
           })
 

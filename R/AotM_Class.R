@@ -7,11 +7,12 @@
 setClassUnion(".OptionalMove", c("Move","MoveStack","data.frame"))
 setClassUnion(".OptionalCHAR", c("character","missing"))
 setClassUnion(".OptionalLogical", c("logical","missing"))
+setClassUnion(".OptionalDF", c("data.frame", "NULL"))
 #setOldClass(c('data.frame'))
 
 setClass(Class = "trackSPDF", contains=c("SpatialPointsDataFrame"),
          representation = representation(
-           VT = 'data.frame',
+           VT = '.OptionalDF',
            dateDownloaded = "POSIXct",
            movebank_study = "character",
            movebank_citation = "character",
