@@ -6,10 +6,42 @@
 #' @param id id of animal(s) to plot.  If NULL - use subset or first animal. 
 #' @param exportPDF a logical indicating whether or not to export a PDF of all animal tracks to the local working directory (default=FALSE).
 #' @param ... options to be passed to plot functions
-#' @S3method plot movetrack
+#' @S3method plot track
 
-#setGeneric("plot", function(movetrack=NULL, id = NULL, subset = NULL, time, x, y=NULL, layout = NULL, auto.par = NULL,  ...)
-#                    standardGeneric("plot"))
+
+
+plot.track <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
+            if (is.null(id))
+              ids <- unique(x$id) else
+                ids <- id
+
+              if (exportPDF)
+                pdf(paste0('movetracks_', x$movebank_study[1], '.pdf'), onefile = TRUE, width = 11, height = 8.5)
+
+              for (i in 1:length(ids)) {
+                di <- subset(x, id == ids[i])
+
+                if (is.null(layout))
+                  layout(cbind(1:1,2:3))
+
+                par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
+
+                with(di, expr = {
+                  plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+                  plot(time,x, type="o", pch=19, col=rgb(0,0,0,.5), xaxt="n", xlab="", cex=0.5,...)
+                  plot(time,y, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+                  title(paste('ID :', ids[i]), outer = TRUE, xpd=NA)
+                })
+
+                if ((length(ids) > 1 & i != length(ids)) & !exportPDF)
+                  par(ask=T) else par(ask=F)
+              }
+
+              if (exportPDF)
+                dev.off()
+          }
+
+
 setMethod(f="plot", 
           signature=c(x='trackSPDF', y = 'missing'),
           definition = function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
@@ -43,35 +75,39 @@ setMethod(f="plot",
                 dev.off()
           })
 
-setMethod(f="plot", 
-          signature=c(x='track', y = 'missing'),
-          definition = function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
-            if (is.null(id)) 
-              ids <- unique(x$id) else 
-                ids <- id
-              
-              if (exportPDF)
-                pdf(paste0('movetracks_', x$movebank_study[1], '.pdf'), onefile = TRUE, width = 11, height = 8.5)
-              
-              for (i in 1:length(ids)) {
-                di <- subset(x, id == ids[i])
-                
-                if (is.null(layout))
-                  layout(cbind(1:1,2:3))
-                
-                par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
-                
-                with(di, expr = {
-                  plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
-                  plot(time,x, type="o", pch=19, col=rgb(0,0,0,.5), xaxt="n", xlab="", cex=0.5,...)
-                  plot(time,y, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
-                  title(paste('ID :', ids[i]), outer = TRUE, xpd=NA)
-                })
-                
-                if ((length(ids) > 1 & i != length(ids)) & !exportPDF)
-                  par(ask=T) else par(ask=F)
-              }
-              
-              if (exportPDF)
-                dev.off()
-          })
+
+# setMethod(f="plot", 
+#           signature=c(x='track', y = 'missing'),
+#           definition = function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
+#             if (is.null(id)) 
+#               ids <- unique(x$id) else 
+#                 ids <- id
+#               
+#               if (exportPDF)
+#                 pdf(paste0('movetracks_', x$movebank_study[1], '.pdf'), onefile = TRUE, width = 11, height = 8.5)
+#               
+#               for (i in 1:length(ids)) {
+#                 di <- subset(x, id == ids[i])
+#                 
+#                 if (is.null(layout))
+#                   layout(cbind(1:1,2:3))
+#                 
+#                 par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
+#                 
+#                 with(di, expr = {
+#                   plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+#                   plot(time,x, type="o", pch=19, col=rgb(0,0,0,.5), xaxt="n", xlab="", cex=0.5,...)
+#                   plot(time,y, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+#                   title(paste('ID :', ids[i]), outer = TRUE, xpd=NA)
+#                 })
+#                 
+#                 if ((length(ids) > 1 & i != length(ids)) & !exportPDF)
+#                   par(ask=T) else par(ask=F)
+#               }
+#               
+#               if (exportPDF)
+#                 dev.off()
+#           })
+
+#setGeneric("plot", function(movetrack=NULL, id = NULL, subset = NULL, time, x, y=NULL, layout = NULL, auto.par = NULL,  ...)
+#                    standardGeneric("plot"))

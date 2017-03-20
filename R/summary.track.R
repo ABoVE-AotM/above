@@ -6,6 +6,15 @@
 ##' @S3method summary track
 ##' @example ./examples/example1.r
 
+summary.track <- function(object){
+            ddply(object, 'id', function(df)
+              with(df, data.frame(n = length(time),
+                                  start = min(time),
+                                  duration = round(difftime(max(time), min(time), unit="days")),
+                                  dt.median = round(mean(difftime(time[-1], time[-length(time)], unit="hour")), 2))))
+  }
+
+
 setMethod(f="summary", 
           signature=c(object="trackSPDF"),
           definition = function(object){
@@ -16,12 +25,12 @@ setMethod(f="summary",
                                   dt.median = round(mean(difftime(time[-1], time[-length(time)], unit="hour")), 2))))
           })
 
-setMethod(f="summary", 
-          signature=c(object="track"),
-          definition = function(object){
-            ddply(object, 'id', function(df)
-              with(df, data.frame(n = length(time), 
-                                  start = min(time), 
-                                  duration = round(difftime(max(time), min(time), unit="days")),
-                                  dt.median = round(mean(difftime(time[-1], time[-length(time)], unit="hour")), 2))))
-          })
+# setMethod(f="summary", 
+#           signature=c(object="track"),
+#           definition = function(object){
+#             ddply(object, 'id', function(df)
+#               with(df, data.frame(n = length(time), 
+#                                   start = min(time), 
+#                                   duration = round(difftime(max(time), min(time), unit="days")),
+#                                   dt.median = round(mean(difftime(time[-1], time[-length(time)], unit="hour")), 2))))
+#           })

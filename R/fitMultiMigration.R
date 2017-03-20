@@ -6,7 +6,6 @@
 ##' @param span1 A vector of *initial* times for analysis windows.  Should be of length *k*, where *k* is the number of migrations to fit.
 ##' @param span2 A vector of *final* times for analysis windows
 ##' @param plot Whether or not to visualize the output with \code{\link{plotMultimigrationFit}}
-##' @export
 ##' 
 ##' @return a data frame with the date, duration, estimated ranging areas of each of the migrations.
 ##' @example ./examples/example3.r  
