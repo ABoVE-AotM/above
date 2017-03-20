@@ -7,7 +7,7 @@
 processMovedata(movedata, xyNames = c("location_long", "location_lat"),
   idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
   keepCols = NULL, getVT = FALSE, geoDist = FALSE, units = "hour",
-  returnSPDF = FALSE, dailymean = FALSE)
+  returnSPDF = FALSE, dailymean = FALSE, returnOutliers = FALSE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
@@ -29,9 +29,11 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 \item{returnSPDF}{if the returned object should be in a SPDF format.}
 
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
+
+\item{returnOutliers}{a logical indicating whether or not to return flagged outliers within the Movebank data set.}
 }
 \value{
-Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time".
+Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
 }
 \description{
 Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.

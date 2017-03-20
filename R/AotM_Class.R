@@ -13,12 +13,14 @@ setClassUnion(".OptionalDF", c("data.frame", "NULL"))
 setClass(Class = "trackSPDF", contains=c("SpatialPointsDataFrame"),
          representation = representation(
            VT = '.OptionalDF',
+           flaggedOutliers = ".OptionalDF",
            dateDownloaded = "POSIXct",
            movebank_study = "character",
            movebank_citation = "character",
            movebank_license = "character"),
          prototype = prototype(
            VT = NULL,
+           flaggedOutliers = NULL,
            dateDownloaded = as.POSIXct(NA),
            movebank_study = NA_character_,
            movebank_citation = NA_character_,
