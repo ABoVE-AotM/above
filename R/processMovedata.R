@@ -12,8 +12,9 @@
 ##' @param units if getVT = TRUE, a string representing the time units used to define time periods (default = 'hour').
 ##' @param returnSPDF if the returned object should be in a SPDF format.
 ##' @param dailymean whether or not to compute the daily mean - useful for the migration analysis.
+##' @param returnOutliers a logical indicating whether or not to return flagged outliers within the Movebank data set.
 ##' 
-##' @return Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". 
+##' @return Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
 ##' 
 ##' @example ./examples/example1.r
 ##' @seealso \link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
@@ -22,11 +23,18 @@
 setGeneric("processMovedata", function(movedata, xyNames = c('location_long', 'location_lat'), 
                                        idcolumn = "individual_id", proj4 = NULL, projTo = NULL, keepCols = NULL,
                                        getVT = FALSE, geoDist = FALSE, units = 'hour', returnSPDF = FALSE, 
-                                       dailymean = FALSE) standardGeneric("processMovedata"))
+                                       dailymean = FALSE, returnOutliers = FALSE) standardGeneric("processMovedata"))
 setMethod(f="processMovedata", 
           signature=c(movedata=".OptionalMove"),
           definition = function(movedata, xyNames, idcolumn, proj4, projTo, keepCols, getVT, geoDist, units,
-                                returnSPDF, dailymean){
+                                returnSPDF, dailymean, returnOutliers){
+            
+            if (returnOutliers) {
+              if (length(movedata@trackIdUnUsedRecords) > 0) {
+                flaggedOutliers <- data.frame(local_identifier = movedata@trackIdUnUsedRecords, 
+                                              movedata@dataUnUsedRecords)
+              } else returnOutliers = FALSE
+            }
             
             # Define for later class instantiation
             dateDownloaded <- as.POSIXct(NA)
@@ -149,5 +157,12 @@ setMethod(f="processMovedata",
                                                              dateDownloaded = dateDownloaded)
               class(out) <- c('track', 'data.frame')
             }
+            
+            if (returnOutliers & returnSPDF) {
+              out@flaggedOutliers <- flaggedOutliers
+            } else if (returnOutliers) {
+              out <- list(valid = out, flaggedOutliers = flaggedOutliers) 
+            }
+            
             return(out)
           })
