@@ -17,7 +17,7 @@
 ##' @return Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
 ##' 
 ##' @example ./examples/example1.r
-##' @seealso \link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
+##' @seealso \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
 ##' @export
 
 
@@ -70,11 +70,11 @@ setMethod(f="processMovedata",
             if(!is.null(projTo)){
               #xy <- project(cbind(movedata$location_long, movedata$location_lat), projTo)
               xy <- project(as.matrix(movedata[, xyNames]), projTo)
+            } else {
+              xy <- quickUTM(movedata$location_long, movedata$location_lat)
+              warning("I'm using the default behavior of the - probably not ideal - convUl funciton in PBSmapping for the UTM selection.")
               movedata$x <- xy[,1]
               movedata$y <- xy[,2]
-            } else {
-              movedata$x <- movedata[, xyNames[1]]
-              movedata$y <- movedata[, xyNames[2]]
             }
             
             movedata.setup <- (mutate(movedata, id = factor(id), time = ymd_hms(timestamp)) %>% 

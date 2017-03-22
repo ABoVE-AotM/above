@@ -8,7 +8,7 @@ Author: Elie Gurarie and other collaborators
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
-Imports:
+Depends:
     MASS,
     parallel,
     survival,
@@ -20,7 +20,8 @@ Imports:
     lubridate,
     move,
     marcher,
-    ggmap
+    ggmap,
+    PBSmapping
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:

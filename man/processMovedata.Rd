@@ -69,5 +69,5 @@ ge2.spdf <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, return
 ge2.traj <- processMovedata(ge2,  id = "individual_id", getVT = TRUE)
 }
 \seealso{
-\link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
+\link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
 }
