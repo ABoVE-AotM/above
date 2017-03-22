@@ -18,6 +18,7 @@
 ##' 
 ##' @example ./examples/example1.r
 ##' @seealso \link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
+##' @export
 
 
 setGeneric("processMovedata", function(movedata, xyNames = c('location_long', 'location_lat'), 

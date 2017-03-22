@@ -2,3 +2,4 @@
 
 S3method(plot,track)
 S3method(summary,track)
+export(processMovedata)
