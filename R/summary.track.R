@@ -3,8 +3,8 @@
 ##' @param object a 'track' object, output from \code{\link{processMovedata}}
 ##' @return a data frame with a column of id's, number of observations, start time, duration and median observation interval of the track.
 ##' 
-##' @export
 ##' @example ./examples/example1.r
+##' @export
 
 
 

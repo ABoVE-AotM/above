@@ -4,19 +4,18 @@
 \alias{map}
 \title{ggmap of a track}
 \usage{
-map(movetrack, zoom = 6, individually = FALSE, id = NULL,
-  exportPDF = FALSE, ...)
+map(movetrack, ...)
 }
 \arguments{
 \item{movetrack}{a \code{movetrack} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}
+
+\item{...}{additional parameters to pass to \code{\link{ggmap}}}
 
 \item{zoom}{the zoom level, an integer from 3 (continent) to 21 (building)}
 
 \item{individually}{whether to produce plots individually (TRUE) or as a population (FALSE; default).}
 
 \item{exportPDF}{a logical indicating whether or not to export plots as a PDF (default = FALSE).}
-
-\item{...}{additional parameters to pass to \code{\link{ggmap}}}
 }
 \value{
 if exportPDF = TRUE, will return a single PDF of all individuals or a population to your working directory.
