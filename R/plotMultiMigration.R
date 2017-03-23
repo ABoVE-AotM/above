@@ -7,19 +7,13 @@
 ##' 
 ##' @example ./examples/example3.r
 
-setGeneric("plotMultiMigration", function(data, M.summary, ...)
-  standardGeneric("plotMultiMigration"))
 
-setMethod(f="plotMultiMigration", 
-          signature=c(data='trackSPDF'),
-          definition = function(data, M.summary, ...){ 
-            data <- data@data 
-            callGeneric()
-          })
 
-setMethod(f="plotMultiMigration", 
-          signature=c(data = 'track'),
-          definition = function(data, M.summary, ...){
+plotMultiMigration <- function(data, M.summary, ...) {   
+  
+  if(!inherits(data, 'track') | (inherits(data, 'track') & !all(c('day', 'day.date') %in% names(data)))) 
+    stop("Data must be of class 'track' with processMovedata(..., dailymean=TRUE)")
+  
   layout(rbind(c(1,2), c(1,3)))
   par(mar = c(0,4,0,0), oma = c(4,4,2,2))
   
@@ -44,4 +38,14 @@ setMethod(f="plotMultiMigration",
   with(M.summary, segments((t1 + ddays(dt))[-length(t1)], y2[-length(y2)], t1[-1], y1[-1], col="blue", lwd=2))
   with(M.summary, segments(min(data$time), y1[1], t1[1], y1[1], col="blue", lwd=2))
   with(M.summary, segments((t1+ddays(dt))[length(t1)], y2[length(y2)], max(data$time), y2[length(y2)], col="blue", lwd=2))
-})
+}
+
+#setGeneric("plotMultiMigration", function(data, M.summary, ...)
+#  standardGeneric("plotMultiMigration"))
+
+#setMethod(f="plotMultiMigration", 
+#          signature=c(data='trackSPDF'),
+#          definition = function(data, M.summary, ...){ 
+#            data <- data@data 
+#            callGeneric()
+ #         })

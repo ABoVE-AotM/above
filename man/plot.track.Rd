@@ -8,7 +8,7 @@ plot.track(x, y = NULL, id = NULL, layout = NULL, auto.par = NULL,
   exportPDF = FALSE, ...)
 }
 \arguments{
-\item{x}{is a \code{AotM} or \code{AotM_df} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}
+\item{x}{is a 'track' class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}
 
 \item{id}{id of animal(s) to plot.  If NULL - use subset or first animal.}
 
