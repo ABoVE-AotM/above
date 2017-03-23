@@ -57,10 +57,10 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
     movedata$y <- xy[,2]
   } else {
     xy <- quickUTM(movedata$location_long, movedata$location_lat)
-    warning("I'm using the default behavior of the - probably not ideal - convUl function in PBSmapping for the UTM selection.")
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
-    projTo <- paste(attr(xy, 'projection'), 'Zone', attr(xy, 'zone'))
+    #projTo <- paste(attr(xy, 'projection'), 'Zone', attr(xy, 'zone'))
+    projTo <- attr(xy, 'projection')
   }
   
   movedata.setup <- (mutate(movedata, id = factor(id), time = ymd_hms(timestamp)) %>% 

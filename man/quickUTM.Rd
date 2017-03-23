@@ -2,16 +2,17 @@
 % Please edit documentation in R/quickUTM.R
 \name{quickUTM}
 \alias{quickUTM}
-\title{Quick UTM}
+\title{Find UTM zone}
 \usage{
 quickUTM(lon, lat)
 }
 \arguments{
-\item{{lon, lat}}{self-explanatory}
+\item{{lon}}{a vector of longitudes.}
 }
 \value{
 data frame with columns X and Y in automatically selected zone.
 }
 \description{
-Uses the \code{\link{convUL}} function in \code{\link{PBSmapping}} to convert longitude and latitude to UTM.  This funciton is buried in \code{\link{processMovedata}}
+Uses longitude to identify the UTM zone and converts Long/Lat coords to UTMs.  
+This function is buried in \code{\link{processMovedata}}
 }
