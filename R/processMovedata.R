@@ -51,16 +51,20 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
   } else names(movedata)[names(movedata) == idcolumn] <- "id"
   
   if(!is.null(projTo)){
-    #xy <- project(cbind(movedata$location_long, movedata$location_lat), projTo)
     xy <- project(as.matrix(movedata[, xyNames]), projTo)
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
   } else {
-    xy <- quickUTM(movedata$location_long, movedata$location_lat)
+    # Transform to Canada Lambert Conformal Conic
+    warning('Transforming LonLat into Canadian Lambert Conformal Conic for units in meters.')
+    projTo <- '+proj=lcc +lat_1=50 +lat_2=70 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
+    #projTo <- '+inits=epsg:102002'
+    xy <- SpatialPoints(as.matrix(movedata[, xyNames]), proj4string = CRS(proj4))
+    xy <- spTransform(xy, CRSobj = CRS(projTo))@coords
+    #xy <- quickUTM(movedata$location_long, movedata$location_lat)
+    #projTo <- attr(xy, 'projection')
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
-    #projTo <- paste(attr(xy, 'projection'), 'Zone', attr(xy, 'zone'))
-    projTo <- attr(xy, 'projection')
   }
   
   movedata.setup <- (mutate(movedata, id = factor(id), time = ymd_hms(timestamp)) %>% 
