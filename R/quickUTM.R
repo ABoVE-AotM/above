@@ -4,9 +4,9 @@
 ##' This function is buried in \code{\link{processMovedata}}
 ##' 
 ##' @param {lon} a vector of longitudes.
-##' 
+##' @param {lat} a vector of latitudes.
 ##' @return data frame with columns X and Y in automatically selected zone. 
-##' 
+##' @export
 
 quickUTM <- function(lon, lat) {
   zone <- (floor((lon + 180)/6) %% 60) + 1

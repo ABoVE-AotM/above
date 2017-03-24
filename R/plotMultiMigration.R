@@ -6,6 +6,7 @@
 ##' @param M.summary A data frame with the multi-migration summary (output of \code{\link{fitMultiMigration}})
 ##' 
 ##' @example ./examples/example3.r
+##' @export
 
 
 

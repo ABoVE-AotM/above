@@ -8,6 +8,8 @@ quickUTM(lon, lat)
 }
 \arguments{
 \item{{lon}}{a vector of longitudes.}
+
+\item{{lat}}{a vector of latitudes.}
 }
 \value{
 data frame with columns X and Y in automatically selected zone.

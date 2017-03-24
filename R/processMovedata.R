@@ -87,10 +87,22 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
   
   # Building output
   p4s <- ifelse(is.null(projTo), proj4, projTo)
-  out <- cbind(movebank_study = mb_study, md.processed)
-  attr(out, 'projection') <- p4s 
-  attr(out, 'dateDownloaded') <- dateDownloaded
-  class(out) <- c('track', 'data.frame')
+  #out <- cbind(movebank_study = mb_study, md.processed)
+  out <- md.processed
   
+  #attr(out, 'projection') <- p4s 
+  #attr(out, 'dateDownloaded') <- dateDownloaded
+  
+  # making the attributes a single "metadata" list
+  metadata <- list(study = mb_study,
+                   projection = p4s, 
+                   dateDownloaded = as.character(dateDownloaded),
+                   citation = mb_citation,
+                   license = mb_license,
+                   dailymean = dailymean)
+  
+  attr(out, 'metadata') <- metadata
+  
+  class(out) <- c('track', 'data.frame')
   return(out)
 }

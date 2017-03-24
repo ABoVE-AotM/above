@@ -9,7 +9,7 @@
 ##' @param flag a flag passed for whether a model converged (0 = TRUE, 1 = FALSE), usually as a result of insufficient test data.
 ##' 
 ##' @return Returns a list containing the fitted and observed values (obj[[i]]$values) and cross-validation metrics (obj[[i]]$cv).
-##' 
+##' @export
 
 
 # Goodness-of-fit function
