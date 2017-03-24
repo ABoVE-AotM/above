@@ -16,8 +16,4 @@ summary.track <- function(object){
                                   start = min(time),
                                   duration = round(difftime(max(time), min(time), unit="days")),
                                   dt.median = round(mean(difftime(time[-1], time[-length(time)], unit="hour")), 2))))
-  
-  if(!is.null(m)) 
-    cat(paste(paste(names(m), unlist(m), sep = ": "), collapse = "\n"),"\n")
-  
-  }
+}
