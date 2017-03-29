@@ -4,7 +4,7 @@
 \alias{fitMultiMigration}
 \title{Fit multiple migrations}
 \usage{
-fitMultiMigration(data, span1, span2, plot = TRUE)
+fitMultiMigration(data, span1, span2, plot)
 }
 \arguments{
 \item{data}{A processed daily averaged data frame, i.e. output of \code{\link{processMovedata}}}

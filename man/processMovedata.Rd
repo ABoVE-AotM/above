@@ -6,8 +6,7 @@
 \usage{
 processMovedata(movedata, xyNames = c("location_long", "location_lat"),
   idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
-  keepCols = NULL, getVT = FALSE, geoDist = FALSE, units = "hour",
-  returnSPDF = FALSE, dailymean = FALSE, returnOutliers = FALSE)
+  keepCols = NULL, dailymean = FALSE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
@@ -20,17 +19,7 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 
 \item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
 
-\item{getVT}{a logical indicating whether or not to estimate trajectory statistics (default = TRUE).}
-
-\item{geoDist}{a logical (default is FALSE) indicating whether or not to estimate distance using geographic coordinates along an ellipsoid (see pointDistance in raster package).}
-
-\item{units}{if getVT = TRUE, a string representing the time units used to define time periods (default = 'hour').}
-
-\item{returnSPDF}{if the returned object should be in a SPDF format.}
-
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
-
-\item{returnOutliers}{a logical indicating whether or not to return flagged outliers within the Movebank data set.}
 }
 \value{
 Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
@@ -48,26 +37,18 @@ Transforms a movebank object into an (optionally) daily averaged simplified data
 ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login)     #multiple birds
 
 # Estimate daily mean locations
-ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE, getVT = TRUE, geoDist = FALSE)
+ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE)
 
-# Include trajectory statistics
-ge1.traj <- processMovedata(ge1,  id = "individual_id", getVT = TRUE)
 
 # one bird, three deployments
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
 # Estimate daily mean locations
-ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, geoDist = FALSE)
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = FALSE)
 
 # Plot daily movements (currently only displays 1 individual)
 plot(ge2.dailymean)
-
-# Return a SpatialPointsDataFrame
-ge2.spdf <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, returnSPDF = T)
-
-# Include trajectory statistics
-ge2.traj <- processMovedata(ge2,  id = "individual_id", getVT = TRUE)
 }
 \seealso{
-\link{map.track}, \link{plot.movetrack}, \link{SpatialPointsDataFrame}, \link{pointDistance}
+\link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
 }

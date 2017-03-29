@@ -7,7 +7,7 @@
 ##' @param numpoints Number of observed points to superimpose on density plots.
 ##' 
 ##' @return Plots the fit of the with-held individual (test data, observed fit) again the remaining sampled individuals (training data, predicted fit). a data frame with median cross-validation metrics for all individuals in a leave-individual-out object.
-##' 
+##' @export
 
 plot.lio <- function(lio, numpoints = Inf) {
   if (class(lio)[1] != 'lio')

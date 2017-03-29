@@ -3,5 +3,8 @@
 .RData
 .Ruserdata
 hidden
-.README_cache
-.README_files
+README_cache
+README_files
+README.rmd
+above.Rproj
+cache

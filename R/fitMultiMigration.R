@@ -6,25 +6,19 @@
 ##' @param span1 A vector of *initial* times for analysis windows.  Should be of length *k*, where *k* is the number of migrations to fit.
 ##' @param span2 A vector of *final* times for analysis windows
 ##' @param plot Whether or not to visualize the output with \code{\link{plotMultimigrationFit}}
-##' @export
 ##' 
 ##' @return a data frame with the date, duration, estimated ranging areas of each of the migrations.
 ##' @example ./examples/example3.r  
+##' @export
 
-setGeneric("fitMultiMigration", function(data, span1, span2, plot = TRUE)
-  standardGeneric("fitMultiMigration"))
 
-setMethod(f="fitMultiMigration", 
-          signature=c(data='trackSPDF'),
-          definition = function(data, span1, span2, plot){ 
-            data <- data@data 
-            class(data) <- c('track', 'data.frame')
-            callGeneric()
-          })
 
-setMethod(f="fitMultiMigration", 
-          signature=c(data = 'track'),
-          definition = function(data, span1, span2, plot){
+
+fitMultiMigration <- function (data, span1, span2, plot) {
+  
+  if(!inherits(data, 'track') | (inherits(data, 'track') & !all(c('day', 'day.date') %in% names(data)))) 
+    stop("Data must be of class 'track' with processMovedata(..., dailymean=TRUE)")
+  
   id <- data$id[1]
   fits <- list()
   for(i in 1:length(span1)){
@@ -46,11 +40,22 @@ setMethod(f="fitMultiMigration",
                                    month = month(t1), 
                                    year = year(t1), 
                                    season = ifelse(month < 6, "spring", "fall")))
-  if(plot)	plotMultiMigration(data, M.summary)	
+  if (plot)	plotMultiMigration(data, M.summary)	
   return(M.summary)
-})
+}
 
 finddate <- function(t, year){
   day0 <- ymd(paste(year, 1, 1))
   as.POSIXct(day0 + ddays(round(t)))
 }
+
+#setGeneric("fitMultiMigration", function(data, span1, span2, plot = TRUE)
+#  standardGeneric("fitMultiMigration"))
+
+#setMethod(f="fitMultiMigration", 
+#          signature=c(data='trackSPDF'),
+#          definition = function(data, span1, span2, plot){ 
+#            data <- data@data 
+#            class(data) <- c('track', 'data.frame')
+#            callGeneric()
+#          })

@@ -5,7 +5,7 @@
 ##' @author Peter Mahoney
 ##' @param lio An 'lio' class object.
 ##' @return Returns a data frame with median cross-validation metrics for all individuals in a leave-individual-out object.
-##' 
+##' @export
 
 summary.lio <- function(lio) {
   if (class(lio)[1] != 'lio')

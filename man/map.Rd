@@ -4,19 +4,18 @@
 \alias{map}
 \title{ggmap of a track}
 \usage{
-map(movetrack, zoom = 6, individually = FALSE, id = NULL,
-  exportPDF = FALSE, ...)
+map(movetrack, ...)
 }
 \arguments{
 \item{movetrack}{a \code{movetrack} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}
+
+\item{...}{additional parameters to pass to \code{\link{ggmap}}}
 
 \item{zoom}{the zoom level, an integer from 3 (continent) to 21 (building)}
 
 \item{individually}{whether to produce plots individually (TRUE) or as a population (FALSE; default).}
 
 \item{exportPDF}{a logical indicating whether or not to export plots as a PDF (default = FALSE).}
-
-\item{...}{additional parameters to pass to \code{\link{ggmap}}}
 }
 \value{
 if exportPDF = TRUE, will return a single PDF of all individuals or a population to your working directory.
@@ -34,23 +33,15 @@ This is a quick wrapper around the \code{\link{ggmap}} function that plots a \co
 ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", login=login)     #multiple birds
 
 # Estimate daily mean locations
-ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE, getVT = TRUE, geoDist = FALSE)
+ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE)
 
-# Include trajectory statistics
-ge1.traj <- processMovedata(ge1,  id = "individual_id", getVT = TRUE)
 
 # one bird, three deployments
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
 # Estimate daily mean locations
-ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, geoDist = FALSE)
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = FALSE)
 
 # Plot daily movements (currently only displays 1 individual)
 plot(ge2.dailymean)
-
-# Return a SpatialPointsDataFrame
-ge2.spdf <- processMovedata(ge2,  id = "individual_id", dailymean = TRUE, returnSPDF = T)
-
-# Include trajectory statistics
-ge2.traj <- processMovedata(ge2,  id = "individual_id", getVT = TRUE)
 }

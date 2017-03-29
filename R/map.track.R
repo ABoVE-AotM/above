@@ -12,56 +12,58 @@
 #' @return if exportPDF = TRUE, will return a single PDF of all individuals or a population to your working directory.
 #' 
 #' @example ./examples/example1.r
+#' @export
 
-setGeneric("map", function(movetrack, zoom = 6, individually = FALSE, id = NULL, exportPDF = FALSE, ...)
-                    standardGeneric("map"))
-setMethod(f="map", 
-          signature=c(movetrack = 'trackSPDF'),
-          definition = function(movetrack, zoom, individually, id, exportPDF, ...){
-            
-            if (individually) {
-              if (is.null(id)) 
-                ids <- unique(movetrack@data$id) else 
-                  ids <- id
-              
-                if (exportPDF)
-                  pdf(paste0('maptracks_', movetrack@movebank_study, '.pdf'), onefile = TRUE, width = 11, height = 8.5)
-                
-                for (i in 1:length(ids)) {
-                  di <- subset(movetrack@data, id == ids[i])
-                  
-                  lon.center <- mean(range(di$lon))
-                  lat.center <- mean(range(di$lat))
-                  
-                  basemap <- get_map(location = c(lon.center, lat.center), 
-                                     zoom = zoom, ...)
-                  
-                  print(ggmap(basemap) + geom_point(data = di, mapping = aes(x = lon, y = lat, col=id)) + 
-                    geom_path() + coord_map() + labs(x = "Longitude", y = "Latitude"))
-                  
-                  if ((length(ids) > 1 & i != length(ids)) & !exportPDF)
-                    par(ask=T) else par(ask=F)
-                }
-                
-                if (exportPDF)
-                  dev.off()
-            } else {
-              if (exportPDF)
-                pdf(paste0('maptracks_', movetrack@movebank_study, '.pdf'), onefile = TRUE, width = 11, height = 8.5)
-              
-              di <- movetrack@data
-                
-              lon.center <- mean(range(di$lon))
-              lat.center <- mean(range(di$lat))
-                
-              basemap <- get_map(location = c(lon.center, lat.center), 
-                                 zoom = zoom, ...)
-                
-              print(ggmap(basemap) + geom_point(data = di, mapping = aes(x = lon, y = lat, col=id)) + 
-                  geom_path() + coord_map() + labs(x = "Longitude", y = "Latitude"))
-              
-              if (exportPDF)
-                dev.off()              
-            }
-              
-          })
+map <- function (movetrack, ...) {
+  UseMethod("map", movetrack)
+}
+
+#' @export
+map.track <- function (movetrack, zoom = 6, individually = FALSE, id = NULL, exportPDF = FALSE, ...) {
+  
+    if (individually) {
+    if (is.null(id)) 
+      ids <- unique(movetrack$id) else 
+        ids <- id
+      
+      if (exportPDF)
+        pdf(paste0('maptracks_', movetrack$movebank_study[1], '.pdf'), onefile = TRUE, width = 11, height = 8.5)
+      
+      for (i in 1:length(ids)) {
+        di <- subset(movetrack, id == ids[i])
+        
+        lon.center <- mean(range(di$lon))
+        lat.center <- mean(range(di$lat))
+        
+        basemap <- get_map(location = c(lon.center, lat.center), 
+                           zoom = zoom, ...)
+        
+        print(ggmap(basemap) + geom_point(data = di, mapping = aes(x = lon, y = lat, col=id)) + 
+                geom_path() + coord_map() + labs(x = "Longitude", y = "Latitude"))
+        
+        if ((length(ids) > 1 & i != length(ids)) & !exportPDF)
+          par(ask=T) else par(ask=F)
+      }
+      
+      if (exportPDF)
+        dev.off()
+  } else {
+    if (exportPDF)
+      pdf(paste0('maptracks_', movetrack$movebank_study[1], '.pdf'), onefile = TRUE, width = 11, height = 8.5)
+    
+    di <- movetrack
+    
+    lon.center <- mean(range(di$lon))
+    lat.center <- mean(range(di$lat))
+    
+    basemap <- get_map(location = c(lon.center, lat.center), 
+                       zoom = zoom, ...)
+    
+    print(ggmap(basemap) + geom_point(data = di, mapping = aes(x = lon, y = lat, col=id)) + 
+            geom_path() + coord_map() + labs(x = "Longitude", y = "Latitude"))
+    
+    if (exportPDF)
+      dev.off()              
+  }
+  
+}
