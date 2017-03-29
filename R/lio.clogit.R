@@ -21,12 +21,12 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
 {
   # Reduced sample size
   # Used to increase speed of processing time
-  if (is.null(thin))
+  if (is.null(thin)) {
     subda <- dat 
-  else {
+    } else {
     strats <- seq(min(dat$Stratum), max(dat$Stratum), by = thin)
     subda <- dat[dat$Stratum %in% strats, ]
-  }
+    }
   
   if (cluster == ID) {
     sform <- as.character(form)
@@ -44,7 +44,7 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
     else
       cl <- makeCluster(ncores)
     
-    clusterExport(cl, list('subda', 'ID', 'cluster', 'form', 'sform', 'gof'))
+    clusterExport(cl, varlist = list('subda', 'ID', 'cluster', 'form', 'sform', 'gof'), envir=environment())
     clusterEvalQ(cl, library(survival))
     
     out <- parLapply(cl, uE, function (id) {
