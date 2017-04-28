@@ -34,7 +34,7 @@ plotMultiMigration <- function(data, M.summary, ...) {
   with(M.summary, segments(min(data$time), x1[1], t1[1], x1[1], col="blue", lwd=2))
   with(M.summary, segments((t1+ddays(dt))[length(t1)], x2[length(x2)], max(data$time), x2[length(x2)], col="blue", lwd=2))
   
-  with(data, plot(time, y/1000, type="o", pch = 21, bg = rgb(1:length(y)/length(y), 1:length(y)/length(y), 1:length(y)/length(y)), col = "grey", cex=0.8))
+  with(data, plot(time, y, type="o", pch = 21, bg = rgb(1:length(y)/length(y), 1:length(y)/length(y), 1:length(y)/length(y)), col = "grey", cex=0.8))
   with(M.summary, segments(t1, y1, t1 + ddays(dt), y2, col="blue", lwd=2))
   with(M.summary, segments((t1 + ddays(dt))[-length(t1)], y2[-length(y2)], t1[-1], y1[-1], col="blue", lwd=2))
   with(M.summary, segments(min(data$time), y1[1], t1[1], y1[1], col="blue", lwd=2))
