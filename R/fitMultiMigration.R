@@ -45,8 +45,8 @@ fitMultiMigration <- function (data, span1, span2, plot) {
 }
 
 finddate <- function(t, year){
-  day0 <- ymd(paste(year, 1, 1))
-  as.POSIXct(day0 + ddays(round(t)))
+  day0 <- lubridate::ymd(paste(year, 1, 1))
+  as.POSIXct(day0 + lubridate::ddays(round(t)))
 }
 
 #setGeneric("fitMultiMigration", function(data, span1, span2, plot = TRUE)
