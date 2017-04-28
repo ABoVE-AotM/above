@@ -18,7 +18,7 @@ plotMultiMigration <- function(data, M.summary, ...) {
   layout(rbind(c(1,2), c(1,3)))
   par(mar = c(0,4,0,0), oma = c(4,4,2,2))
   
-  with(data, plot(x/1000, y/1000, type="o", asp=1, pch = 21, bg = rgb(1:length(x)/length(x), 1:length(x)/length(x), 1:length(x)/length(x)), col = "grey", cex=0.8))
+  with(data, plot(x, y, type="o", asp=1, pch = 21, bg = rgb(1:length(x)/length(x), 1:length(x)/length(x), 1:length(x)/length(x)), col = "grey", cex=0.8))
   
   with(subset(M.summary, season == "spring"),{
     points(c(x1, x2), c(y1, y2), col="darkgreen", pch = 4, cex=2, lwd=2)
@@ -28,7 +28,7 @@ plotMultiMigration <- function(data, M.summary, ...) {
     points(c(x1, x2), c(y1, y2), col="red", pch = 4, cex=2, lwd=2)
     lines(c(x1, x2), c(y1, y2), col="red", lwd=2)})
   
-  with(data, plot(time, x/1000, type="o", pch = 21, bg = rgb(1:length(x)/length(x), 1:length(x)/length(x), 1:length(x)/length(x)), col = "grey", cex=0.8, xaxt="n", xlab=""))
+  with(data, plot(time, x, type="o", pch = 21, bg = rgb(1:length(x)/length(x), 1:length(x)/length(x), 1:length(x)/length(x)), col = "grey", cex=0.8, xaxt="n", xlab=""))
   with(M.summary, segments(t1, x1, t1 + ddays(dt), x2, col="blue", lwd=2))
   with(M.summary, segments((t1 + ddays(dt))[-length(t1)], x2[-length(x2)], t1[-1], x1[-1], col="blue", lwd=2))
   with(M.summary, segments(min(data$time), x1[1], t1[1], x1[1], col="blue", lwd=2))

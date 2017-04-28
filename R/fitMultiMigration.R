@@ -23,7 +23,7 @@ fitMultiMigration <- function (data, span1, span2, plot) {
   fits <- list()
   for(i in 1:length(span1)){
     myfit <- try(with(subset(data, day >= span1[i] & day <= span2[i]), 
-                      estimate_shift(T = day, X = x/1e3, Y = y/1e3, model = "WN")))
+                      estimate_shift(T = day, X = x, Y = y, model = "WN")))
     fits[[length(fits)+1]] <- list(span = c(span1 + span2), fit = myfit)
   }
   names(fits) <- paste0("M", 1:length(span1))
