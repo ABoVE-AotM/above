@@ -8,13 +8,12 @@ Author: Elie Gurarie, Peter Mahoney, Scott LaPoint and others
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
-Depends: move, magrittr
+Depends: move, magrittr, plyr, 
 Imports:
     MASS,
     parallel,
     survival,
     nlme,
-    plyr,
     scales,
     rgdal,
     lubridate,
