@@ -36,9 +36,9 @@ fitMultiMigration <- function (data, span1, span2, plot) {
                                 l$fit$p.hat
                           }) %>% 
                             mutate(t1 = finddate(t1, year(data$time[1])), 
-                                   yday1 = yday(t1), 
-                                   month = month(t1), 
-                                   year = year(t1), 
+                                   yday1 = lubridate::yday(t1), 
+                                   month = lubridate::month(t1), 
+                                   year = lubridate::year(t1), 
                                    season = ifelse(month < 6, "spring", "fall")))
   if (plot)	plotMultiMigration(data, M.summary)	
   return(M.summary)
