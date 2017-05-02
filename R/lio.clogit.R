@@ -85,7 +85,7 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
     })
     
     stopCluster(cl)
-    
+    names(out) <- uE
   } else {
     for (id in uE) {
       print(paste('Cluster:', id))
