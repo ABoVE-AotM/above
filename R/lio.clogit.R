@@ -77,7 +77,10 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       valPredict <- predict(modTrain, newdata = datonly, type = 'lp', reference = 'sample')
       
       # Estimate goodness of fit
-      return(gof(do = datonly[c('Stratum', 'Used')], fits = plogis(valPredict), 
+      y <- as.character(form)[[2]]
+      coefs <- strsplit(as.character(form)[[3]], ' [+] ')[[1]]
+      strat <- substr(coefs[grep('strata[(]', coefs)], 8, nchar(coefs[grep('strata[(]', coefs)]) - 1)
+      return(gof(do = datonly[c(strat, y)], fits = plogis(valPredict), 
                  obs = plogis(testPredict), flag = flag))
     })
     
@@ -115,7 +118,10 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       valPredict <- predict(modTrain, newdata = datonly, type = 'lp', reference = 'sample')
       
       # Estimate goodness of fit
-      rec <- gof(do = datonly[c('Stratum', 'Used')], fits = plogis(valPredict), 
+      y <- as.character(form)[[2]]
+      coefs <- strsplit(as.character(form)[[3]], ' [+] ')[[1]]
+      strat <- substr(coefs[grep('strata[(]', coefs)], 8, nchar(coefs[grep('strata[(]', coefs)]) - 1)
+      rec <- gof(do = datonly[c(strat, y)], sfits = plogis(valPredict), 
                  obs = plogis(testPredict), flag = flag)
       out[[as.character(id)]] <- rec
     }

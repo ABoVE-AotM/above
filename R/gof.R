@@ -21,15 +21,15 @@ gof <- function(do, fits, obs, flag = NULL)
   ## The function to compute the rank within a strata
   samplepred <- function(df) {
     ## Number of controls
-    nrand <- sum(df[, 'Used'] == 0)
+    nrand <- sum(df[, 2] == 0)
     ## Rank of the case (among case + controls)
-    obs <- rank(df$fits)[df[, 'Used'] == 1]
+    obs <- rank(df$fits)[df[, 2] == 1]
     ## Rank of a random control (among controls only!)
-    rand <- sample(rank(df$fits[df[, 'Used'] == 0]), 1)
+    rand <- sample(rank(df$fits[df[, 2] == 0]), 1)
     return(data.frame(obs = obs, rand = rand, nrand = nrand))
   }
   
-  ranks <- do.call(rbind, by(drank, drank[, 'Stratum'], samplepred))
+  ranks <- do.call(rbind, by(drank, drank[, 1], samplepred))
   
   ## Is there the same number of controls per strata?
   nrand <- unique(ranks$nrand)
