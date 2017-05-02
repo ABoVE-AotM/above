@@ -51,7 +51,7 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       datless <- subda[subda[,ID] != id,]
       datonly <- subda[subda[,ID] == id,]
       
-      if (length(levels(as.factor(datonly[, cluster]))) <= 1) {
+      if (length(levels(factor(datonly[, cluster]))) <= 1) {
         sform <- as.character(form)
         sform2 <- strsplit(sform[3], '[+]')[[1]]
         sform <- formula(paste0(sform[2], sform[1], paste(sform2[-grep('cluster[(]', sform2)], collapse='+')))
@@ -92,7 +92,7 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       datless <- subda[subda[,ID] != id,]
       datonly <- subda[subda[,ID] == id,]
       
-      if (length(levels(as.factor(datonly[, cluster]))) <= 1) {
+      if (length(levels(factor(datonly[, cluster]))) <= 1) {
         sform <- as.character(form)
         sform2 <- strsplit(sform[3], '[+]')[[1]]
         sform <- formula(paste0(sform[2], sform[1], paste(sform2[-grep('cluster[(]', sform2)], collapse='+')))
@@ -121,7 +121,7 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       y <- as.character(form)[[2]]
       coefs <- strsplit(as.character(form)[[3]], ' [+] ')[[1]]
       strat <- substr(coefs[grep('strata[(]', coefs)], 8, nchar(coefs[grep('strata[(]', coefs)]) - 1)
-      rec <- gof(do = datonly[c(strat, y)], sfits = plogis(valPredict), 
+      rec <- gof(do = datonly[c(strat, y)], fits = plogis(valPredict), 
                  obs = plogis(testPredict), flag = flag)
       out[[as.character(id)]] <- rec
     }
