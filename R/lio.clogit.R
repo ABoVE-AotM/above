@@ -13,10 +13,9 @@
 ##' 
 ##' @return Returns a list of lists indexed by individual.  Nested within each individual's element is a second list containing the fitted and observed values (obj[[i]]$values) and cross-validation metrics (obj[[i]]$cv).
 ##' @seealso \link{processMovedata}
-##' @export
 ##' 
+##' @export
 
-# LEAVE-ONE-OUT VALIDATION 
 lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'AnimalID', 
                        inPar = TRUE, ncores = NULL) 
 {
