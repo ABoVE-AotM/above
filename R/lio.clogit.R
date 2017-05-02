@@ -13,6 +13,7 @@
 ##' 
 ##' @return Returns a list of lists indexed by individual.  Nested within each individual's element is a second list containing the fitted and observed values (obj[[i]]$values) and cross-validation metrics (obj[[i]]$cv).
 ##' @seealso \link{processMovedata}
+##' @export
 ##' 
 
 # LEAVE-ONE-OUT VALIDATION 
