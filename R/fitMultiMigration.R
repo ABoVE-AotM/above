@@ -12,8 +12,6 @@
 ##' @export
 
 
-
-
 fitMultiMigration <- function (data, span1, span2, plot) {
   
   if(!inherits(data, 'track') | (inherits(data, 'track') & !all(c('day', 'day.date') %in% names(data)))) 

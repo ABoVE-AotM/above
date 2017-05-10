@@ -16,7 +16,8 @@ Imports:
     nlme,
     rgdal,
     marcher,
-    ggmap
+    ggmap,
+    scales
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:
