@@ -15,8 +15,6 @@
 ##' @seealso \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
 ##' @export
 
-
-
 processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat'), 
                             idcolumn = "individual_id", proj4 = NULL, projTo = NULL, keepCols = NULL, 
                             dailymean = FALSE) {
