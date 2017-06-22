@@ -12,8 +12,6 @@
 ##' @export
 
 
-
-
 fitMultiMigration <- function (data, span1, span2, plot) {
   
   if(!inherits(data, 'track') | (inherits(data, 'track') & !all(c('day', 'day.date') %in% names(data)))) 
@@ -23,7 +21,7 @@ fitMultiMigration <- function (data, span1, span2, plot) {
   fits <- list()
   for(i in 1:length(span1)){
     myfit <- try(with(subset(data, day >= span1[i] & day <= span2[i]), 
-                      estimate_shift(T = day, X = x/1e3, Y = y/1e3, model = "WN")))
+                      estimate_shift(T = day, X = x, Y = y, model = "WN")))
     fits[[length(fits)+1]] <- list(span = c(span1 + span2), fit = myfit)
   }
   names(fits) <- paste0("M", 1:length(span1))
@@ -36,17 +34,17 @@ fitMultiMigration <- function (data, span1, span2, plot) {
                                 l$fit$p.hat
                           }) %>% 
                             mutate(t1 = finddate(t1, year(data$time[1])), 
-                                   yday1 = yday(t1), 
-                                   month = month(t1), 
-                                   year = year(t1), 
+                                   yday1 = lubridate::yday(t1), 
+                                   month = lubridate::month(t1), 
+                                   year = lubridate::year(t1), 
                                    season = ifelse(month < 6, "spring", "fall")))
   if (plot)	plotMultiMigration(data, M.summary)	
   return(M.summary)
 }
 
 finddate <- function(t, year){
-  day0 <- ymd(paste(year, 1, 1))
-  as.POSIXct(day0 + ddays(round(t)))
+  day0 <- lubridate::ymd(paste(year, 1, 1))
+  as.POSIXct(day0 + lubridate::ddays(round(t)))
 }
 
 #setGeneric("fitMultiMigration", function(data, span1, span2, plot = TRUE)

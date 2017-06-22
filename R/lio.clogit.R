@@ -14,19 +14,19 @@
 ##' @return Returns a list of lists indexed by individual.  Nested within each individual's element is a second list containing the fitted and observed values (obj[[i]]$values) and cross-validation metrics (obj[[i]]$cv).
 ##' @seealso \link{processMovedata}
 ##' 
+##' @export
 
-# LEAVE-ONE-OUT VALIDATION 
 lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'AnimalID', 
                        inPar = TRUE, ncores = NULL) 
 {
   # Reduced sample size
   # Used to increase speed of processing time
-  if (is.null(thin))
+  if (is.null(thin)) {
     subda <- dat 
-  else {
+    } else {
     strats <- seq(min(dat$Stratum), max(dat$Stratum), by = thin)
     subda <- dat[dat$Stratum %in% strats, ]
-  }
+    }
   
   if (cluster == ID) {
     sform <- as.character(form)
@@ -44,14 +44,14 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
     else
       cl <- makeCluster(ncores)
     
-    clusterExport(cl, list('subda', 'ID', 'cluster', 'form', 'sform', 'gof'))
+    clusterExport(cl, varlist = list('subda', 'ID', 'cluster', 'form', 'sform', 'gof'), envir=environment())
     clusterEvalQ(cl, library(survival))
     
     out <- parLapply(cl, uE, function (id) {
       datless <- subda[subda[,ID] != id,]
       datonly <- subda[subda[,ID] == id,]
       
-      if (length(levels(as.factor(datonly[, cluster]))) <= 1) {
+      if (length(levels(factor(datonly[, cluster]))) <= 1) {
         sform <- as.character(form)
         sform2 <- strsplit(sform[3], '[+]')[[1]]
         sform <- formula(paste0(sform[2], sform[1], paste(sform2[-grep('cluster[(]', sform2)], collapse='+')))
@@ -77,19 +77,22 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       valPredict <- predict(modTrain, newdata = datonly, type = 'lp', reference = 'sample')
       
       # Estimate goodness of fit
-      return(gof(do = datonly[c('Stratum', 'Used')], fits = plogis(valPredict), 
+      y <- as.character(form)[[2]]
+      coefs <- strsplit(as.character(form)[[3]], ' [+] ')[[1]]
+      strat <- substr(coefs[grep('strata[(]', coefs)], 8, nchar(coefs[grep('strata[(]', coefs)]) - 1)
+      return(gof(do = datonly[c(strat, y)], fits = plogis(valPredict), 
                  obs = plogis(testPredict), flag = flag))
     })
     
     stopCluster(cl)
-    
+    names(out) <- uE
   } else {
     for (id in uE) {
       print(paste('Cluster:', id))
       datless <- subda[subda[,ID] != id,]
       datonly <- subda[subda[,ID] == id,]
       
-      if (length(levels(as.factor(datonly[, cluster]))) <= 1) {
+      if (length(levels(factor(datonly[, cluster]))) <= 1) {
         sform <- as.character(form)
         sform2 <- strsplit(sform[3], '[+]')[[1]]
         sform <- formula(paste0(sform[2], sform[1], paste(sform2[-grep('cluster[(]', sform2)], collapse='+')))
@@ -115,7 +118,10 @@ lio.clogit <- function(dat, form, thin = NULL, cluster = 'ID_year', ID = 'Animal
       valPredict <- predict(modTrain, newdata = datonly, type = 'lp', reference = 'sample')
       
       # Estimate goodness of fit
-      rec <- gof(do = datonly[c('Stratum', 'Used')], fits = plogis(valPredict), 
+      y <- as.character(form)[[2]]
+      coefs <- strsplit(as.character(form)[[3]], ' [+] ')[[1]]
+      strat <- substr(coefs[grep('strata[(]', coefs)], 8, nchar(coefs[grep('strata[(]', coefs)]) - 1)
+      rec <- gof(do = datonly[c(strat, y)], fits = plogis(valPredict), 
                  obs = plogis(testPredict), flag = flag)
       out[[as.character(id)]] <- rec
     }
