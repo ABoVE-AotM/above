@@ -64,5 +64,9 @@ getVT.track <- function (track, units = 'hours', geoDist = FALSE) {
     mi <- cbind(mi, trajTab)
     vto <- rbind(vto, mi)
   }
+  
+  attr(vto, 'metadata') <- attr(track, 'metadata')
+  class(vto) <- class(track)
+  
   return(vto)
 }
