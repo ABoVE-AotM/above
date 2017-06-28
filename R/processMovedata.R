@@ -28,6 +28,10 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
   mb_license <- as.character(NA)
   
   if(inherits(movedata, "Move") | inherits(movedata, "MoveStack")){
+    
+    # MOVE: depends on @study, @citation, @license...these are included
+    # as attributes later.
+    # Also, used to pull projection information from @proj4string
     dateDownloaded <- movedata@dateCreation
     if (length(movedata@study) > 0) 
       mb_study <- movedata@study
@@ -43,6 +47,7 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
     proj4 <- paste0("+proj=lcc +lat_1=",lat.center," +lat_2=",lat.center," +lon_0=",lon.center," +ellps=WGS84")
   }
   
+  # MOVE: juggling of various id naming schemes,
   # if a variable call 'id' exists rename it to 'id_movebank'
   # so that we call the appropriate 'id' variable later
   if (any(names(movedata) == 'id') & idcolumn != 'id') {              
