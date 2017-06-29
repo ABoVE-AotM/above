@@ -17,12 +17,7 @@
 ##' @seealso \link{processMovedata}, \link{pointDistance}
 ##' @export
 
-getVT <- function (track, ...) {
-  UseMethod("getVT", track)
-}
-
-##' @export
-getVT.track <- function (track, units = 'hours', geoDist = FALSE) {
+getVT <- function (track, units = 'hours', geoDist = FALSE) {
   if(grepl('+proj=longlat', attr(track, 'metadata')$projection))
     stop('x/y in track object should be projected with a meaningful distance unit.')
   if (is.null(units))

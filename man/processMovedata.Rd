@@ -17,12 +17,35 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 
 \item{projTo}{a crs string for (re)projecting input data.}
 
-\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
+\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns.}
 
-\item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
+\item{dailymean}{whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date}
 }
 \value{
-Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
+Returns a data frame with columns:
+ \itemize{
+ \item id
+ \item time - POSIXct
+ \item lon, lat
+ \item x, y 
+ \item time
+ \item  any columns named in keepCols argument
+ } 
+ TO DO - add tags: 
+ If \code{getVT = TRUE}, also returns:
+ \itemize{ 
+ \item z, z.start, z.end - complex numbers indicating locations of steps
+ \item stepLength
+ \item phi, theta - absolute and relative turning angles, respectively
+ \item t.start, t.end, t.mid - numeric time, 
+ \item dT - difference in time over step, 
+ \item v - velocity, default meters / hour
+ \item t.mid.POSIX - time mid point in POSIX
+ }
+ If \code{dailymean = TRUE}, \itemize{
+ \item day - day since Jan 1 of first year
+ \item day.time.}
+ If \code{returnOutliers = TRUE} and \code{returnSPDF = FALSE}, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
 }
 \description{
 Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
@@ -39,15 +62,25 @@ ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", log
 # Estimate daily mean locations
 ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE)
 
+# Three convenient "movetrack" methods:
+summary(ge1.dailymean)
+plot(ge1.dailymean)
+map(ge1.dailymean)
+
 
 # one bird, three deployments
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
-# Estimate daily mean locations
-ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = FALSE)
+# all locations and all columns
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", keepCols = "all")
+summary(ge2.dailymean)
 
-# Plot daily movements (currently only displays 1 individual)
-plot(ge2.dailymean)
+
+
+# all locations and all columns
+ds.df <- processMovedata(ds,  id = "individual_id", keepCols = "all", dailymean=TRUE)
+summary(ds.df)
+map(ds.df)
 }
 \seealso{
 \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}

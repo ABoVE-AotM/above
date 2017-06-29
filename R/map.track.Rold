@@ -1,6 +1,6 @@
 #' ggmap of a track
 #' 
-#' This is a quick wrapper around the \code{\link{ggmap}} function that plots a \code{track} object (including with multiple individuals) and
+#' This is a quick wrapper around the \code{\link{ggmap}} function that plots a \code{movetrack} object (including with multiple individuals).
 #' 
 
 #' @param movetrack a \code{movetrack} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"
@@ -19,7 +19,7 @@ map <- function (movetrack, ...) {
 }
 
 #' @export
-map.track <- function (movetrack, zoom = 6, individually = FALSE, id = NULL, exportPDF = FALSE, ...) {
+map.movetrack <- function (movetrack, zoom = 6, individually = FALSE, id = NULL, exportPDF = FALSE, ...) {
   
     if (individually) {
     if (is.null(id)) 

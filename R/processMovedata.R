@@ -6,10 +6,33 @@
 ##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!
 ##' @param proj4 the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.
 ##' @param projTo a crs string for (re)projecting input data.
-##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).
-##' @param dailymean whether or not to compute the daily mean - useful for the migration analysis.
+##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns. 
+##' @param dailymean whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date
 ##' 
-##' @return Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
+##' @return Returns a data frame with columns:
+##'  \itemize{
+##'  \item id
+##'  \item time - POSIXct
+##'  \item lon, lat
+##'  \item x, y 
+##'  \item time
+##'  \item  any columns named in keepCols argument
+##'  } 
+##'  TO DO - add tags: 
+##'  If \code{getVT = TRUE}, also returns:
+##'  \itemize{ 
+##'  \item z, z.start, z.end - complex numbers indicating locations of steps
+##'  \item stepLength
+##'  \item phi, theta - absolute and relative turning angles, respectively
+##'  \item t.start, t.end, t.mid - numeric time, 
+##'  \item dT - difference in time over step, 
+##'  \item v - velocity, default meters / hour
+##'  \item t.mid.POSIX - time mid point in POSIX
+##'  }
+##'  If \code{dailymean = TRUE}, \itemize{
+##'  \item day - day since Jan 1 of first year
+##'  \item day.time.}
+##'  If \code{returnOutliers = TRUE} and \code{returnSPDF = FALSE}, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
 ##' 
 ##' @example ./examples/example1.r
 ##' @seealso \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
@@ -18,6 +41,8 @@
 processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat'), 
                             idcolumn = "individual_id", proj4 = NULL, projTo = NULL, keepCols = NULL, 
                             dailymean = FALSE) {
+  
+
   
   # Define for later class instantiation
   dateDownloaded <- as.POSIXct(NA)
@@ -74,18 +99,20 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
                                 lat = df[, xyNames[2]])
                        }))
   
+  if(is.null(keepCols)) keepCols <- c() else if(keepCols == "all"){
+    keepCols <- names(movedata.setup)
+    keepCols <- keepCols[which(!(keepCols %in% c("id", "day.date", "time", "x","y","lon","lat","day") ))]
+  }
+  
+  
   # Summarizing by day
-  if(dailymean){
+  if(dailymean)
     md.processed <- ddply(movedata.setup, c("id", "day", "day.date"), summarize, 
                           time = mean(time),
                           lon = mean(lon), 
                           lat = mean(lat), 
-                          x = mean(x), y = mean(y))
-    if (!is.null(keepCols))
-      md.processed <- merge(md.processed, 
-                            unique(movedata.setup[, c('id', 'day.date', keepCols)]), 
-                            by = c('id', 'day.date'), all.x = T)
-  } else md.processed <- movedata.setup[,c("id", "time", "lon", "lat", "x", "y", keepCols)]
+                          x = mean(x), y = mean(y)) else 
+    md.processed <- movedata.setup[,c("id", "time", "lon", "lat", "x", "y", keepCols)]
   
   # Building output
   p4s <- ifelse(is.null(projTo), proj4, projTo)
@@ -105,6 +132,6 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
   
   attr(out, 'metadata') <- metadata
   
-  class(out) <- c('track', 'data.frame')
+  class(out) <- c('movetrack', 'data.frame')
   return(out)
 }
