@@ -3,12 +3,15 @@
 ##' Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
 ##' 
 ##' @param movedata movement data - can be a \code{Move} object (or stack) from movebank
-##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!
+##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe "individual_id" ... this is confusing!
+
 ##' @param proj4 the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.
 ##' @param projTo a crs string for (re)projecting input data.
 ##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns. 
 ##' @param dailymean whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date
-##' 
+##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).
+##' @param keepCols scd: to see available info to retain see the reference data for the study using getMovebank("tag"), getMovebank("individual"), getMovebank("deployment"), or IMO better to get all of it as a single table excluding unused attributes by downloading from Movebank (Download > Download Reference Data).
+##' @param dailymean whether or not to compute the daily mean - useful for the migration analysis.
 ##' @return Returns a data frame with columns:
 ##'  \itemize{
 ##'  \item id
@@ -33,6 +36,17 @@
 ##'  \item day - day since Jan 1 of first year
 ##'  \item day.time.}
 ##'  If \code{returnOutliers = TRUE} and \code{returnSPDF = FALSE}, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
+##' scd: For "time", note possible issues with timezones changing when moveStacks are created: https://gitlab.com/bartk/move/issues/6
+##' 
+##' @details Regarding the \code{idcolumn} issues, SCD has the following insights (2017-06): 
+##' 
+##' \emph{Even more than confusing, this is a possible cause of error. There is a current bug in move whereby when data are accessed using \code{\link{getMovebankData}}, the tracks will be separated by deployment rather than individual. In cases that an individual has been tracked over multiple deployments, each deployment will be incorrectly understood to be and analyzed as a separate animal. See \url{https://gitlab.com/bartk/move/issues/2}
+##' 
+##' \code{deployment_id} is in general not an appropriate idcolumn to use, for the same reason described above. Many of our studies include individuals with multiple deployments.
+##' 
+##' \code{idcolumn} should ideally show \code{animalName} or \code{individual_local_identifier}, i.e. the "animal id" in Movebank. sometimes move uses the internal database ids, e.g. \code{individual_id} which is difficult to link back to the animal in Movebank.
+##' 
+##' Currently in some cases \code{coords.x1} and \code{coords.x2} are used instead of \code{location.long}, \code{location.lat}. See \url{https://gitlab.com/bartk/move/issues/5} and \url{https://gitlab.com/bartk/move/issues/3}}
 ##' 
 ##' @example ./examples/example1.r
 ##' @seealso \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}
@@ -51,6 +65,10 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
   mb_license <- as.character(NA)
   
   if(inherits(movedata, "Move") | inherits(movedata, "MoveStack")){
+    
+    # MOVE: depends on @study, @citation, @license...these are included
+    # as attributes later.
+    # Also, used to pull projection information from @proj4string
     dateDownloaded <- movedata@dateCreation
     if (length(movedata@study) > 0) 
       mb_study <- movedata@study
@@ -66,6 +84,7 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
     proj4 <- paste0("+proj=lcc +lat_1=",lat.center," +lat_2=",lat.center," +lon_0=",lon.center," +ellps=WGS84")
   }
   
+  # MOVE: juggling of various id naming schemes,
   # if a variable call 'id' exists rename it to 'id_movebank'
   # so that we call the appropriate 'id' variable later
   if (any(names(movedata) == 'id') & idcolumn != 'id') {              
