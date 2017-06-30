@@ -39,11 +39,6 @@ ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs
 # all locations and all columns
 ge2.dailymean <- processMovedata(ge2,  id = "individual_id", keepCols = "all")
 summary(ge2.dailymean)
-
-
-
-# all locations and all columns
-ds.df <- processMovedata(ds,  id = "individual_id", keepCols = "all", dailymean=TRUE)
-summary(ds.df)
-map(ds.df)
+plot(ge2.dailymean, id = ge2.dailymean$id[1])
+map(ge2.dailymean)
 }
