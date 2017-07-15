@@ -4,12 +4,14 @@
 \alias{quickUTM}
 \title{Find UTM zone}
 \usage{
-quickUTM(lon, lat)
+quickUTM(lon, lat, singlezone = TRUE, zone = NULL)
 }
 \arguments{
-\item{{lon}}{a vector of longitudes.}
+\item{singlezone}{coerce all data to a single zone;  default TRUE, if FALSE, each location gets its own zone, and the vector of UTM zones is returned.}
 
-\item{{lat}}{a vector of latitudes.}
+\item{zone}{the zone to coerce to - if NULL (default), use the zone of the mid-point of the longitude}
+
+\item{{lon, lat}}{vectord of longituded and latitudes.}
 }
 \value{
 data frame with columns X and Y in automatically selected zone.

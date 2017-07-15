@@ -5,7 +5,7 @@
 \title{process Move data}
 \usage{
 processMovedata(movedata, xyNames = c("location_long", "location_lat"),
-  idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
+  idcolumn = "individual_id", proj4 = NULL, projTo = NULL, utm = FALSE,
   keepCols = NULL, dailymean = FALSE)
 }
 \arguments{
@@ -15,7 +15,9 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 
 \item{proj4}{the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.}
 
-\item{projTo}{a crs string for (re)projecting input data.}
+\item{projTo}{a crs string for (re)projecting input data (if \code{utm} is FALSE).}
+
+\item{utm}{whether to convert to UTM coordinates - using the central longitude to select the zone.  This is best for data of relatively small extent.}
 
 \item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns.}
 

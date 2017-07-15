@@ -4,9 +4,9 @@
 ##' 
 ##' @param movedata movement data - can be a \code{Move} object (or stack) from movebank
 ##' @param idcolumn name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe "individual_id" ... this is confusing!
-
 ##' @param proj4 the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.
-##' @param projTo a crs string for (re)projecting input data.
+##' @param utm whether to convert to UTM coordinates - using the central longitude to select the zone.  This is best for data of relatively small extent. 
+##' @param projTo a crs string for (re)projecting input data (if \code{utm} is FALSE).
 ##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns. 
 ##' @param dailymean whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date
 ##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).
@@ -53,10 +53,9 @@
 ##' @export
 
 processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat'), 
-                            idcolumn = "individual_id", proj4 = NULL, projTo = NULL, keepCols = NULL, 
-                            dailymean = FALSE) {
-  
-
+                            idcolumn = "individual_id", proj4 = NULL, projTo = NULL, 
+                            utm = FALSE, 
+                            keepCols = NULL, dailymean = FALSE) {
   
   # Define for later class instantiation
   dateDownloaded <- as.POSIXct(NA)
@@ -97,17 +96,21 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
     movedata$x <- xy[,1]
     movedata$y <- xy[,2]
   } else {
-    # Transform to Canada Lambert Conformal Conic
-    warning('Transforming LonLat into Canadian Lambert Conformal Conic for units in meters.')
-    projTo <- '+proj=lcc +lat_1=50 +lat_2=70 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
-    #projTo <- '+inits=epsg:102002'
-    xy <- SpatialPoints(as.matrix(movedata[, xyNames]), proj4string = CRS(proj4))
-    xy <- spTransform(xy, CRSobj = CRS(projTo))@coords
-    #xy <- quickUTM(movedata$location_long, movedata$location_lat)
-    #projTo <- attr(xy, 'projection')
-    movedata$x <- xy[,1]
-    movedata$y <- xy[,2]
+    if(utm){
+      xy <- quickUTM(movedata$location_long, movedata$location_lat, singlezone = TRUE)
+      projTo <- attr(xy, 'projection')
+    } else {    
+      # Transform to Canada Lambert Conformal Conic
+      warning('Transforming LonLat into Canadian Lambert Conformal Conic for units in meters.')
+      projTo <- '+proj=lcc +lat_1=50 +lat_2=70 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
+      #projTo <- '+inits=epsg:102002'
+      xy <- SpatialPoints(as.matrix(movedata[, xyNames]), proj4string = CRS(proj4))
+      xy <- spTransform(xy, CRSobj = CRS(projTo))@coords
+    }
   }
+  
+  movedata$x <- xy[,1]
+  movedata$y <- xy[,2]
   
   movedata.setup <- (mutate(movedata, id = factor(id), time = ymd_hms(timestamp)) %>% 
                        ddply("id", function(df){
