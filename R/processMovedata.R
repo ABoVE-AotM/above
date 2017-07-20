@@ -7,9 +7,8 @@
 ##' @param proj4 the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.
 ##' @param utm whether to convert to UTM coordinates - using the central longitude to select the zone.  This is best for data of relatively small extent. 
 ##' @param projTo a crs string for (re)projecting input data (if \code{utm} is FALSE).
-##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns. 
 ##' @param dailymean whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date
-##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).
+##' @param keepCols vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns. 
 ##' @param keepCols scd: to see available info to retain see the reference data for the study using getMovebank("tag"), getMovebank("individual"), getMovebank("deployment"), or IMO better to get all of it as a single table excluding unused attributes by downloading from Movebank (Download > Download Reference Data).
 ##' @param dailymean whether or not to compute the daily mean - useful for the migration analysis.
 ##' @return Returns a data frame with columns:
@@ -121,7 +120,7 @@ processMovedata <- function(movedata, xyNames = c('location_long', 'location_lat
                                 lat = df[, xyNames[2]])
                        }))
   
-  if(is.null(keepCols)) keepCols <- c() else if(keepCols == "all"){
+  if(is.null(keepCols)) keepCols <- c() else if("all" %in% keepCols) {
     keepCols <- names(movedata.setup)
     keepCols <- keepCols[which(!(keepCols %in% c("id", "day.date", "time", "x","y","lon","lat","day") ))]
   }
