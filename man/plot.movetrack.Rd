@@ -4,8 +4,8 @@
 \alias{plot.movetrack}
 \title{Quick plot of a track (against x-y-time)}
 \usage{
-plot.movetrack(x, y = NULL, id = NULL, layout = NULL, auto.par = NULL,
-  exportPDF = FALSE, ...)
+plot.movetrack(x, y = NULL, time = NULL, id = NULL, layout = NULL,
+  auto.par = NULL, exportPDF = FALSE, col = NULL, ...)
 }
 \arguments{
 \item{x}{is a 'track' class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"}

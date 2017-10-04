@@ -3,7 +3,7 @@
 ##' Uses longitude to identify the UTM zone and converts Long/Lat coords to UTMs.  
 ##' This function is buried in \code{\link{processMovedata}}
 ##' 
-##' @param {lon,lat} vectord of longituded and latitudes.
+##' @param {lon,lat} vectors of longitude and latitude.
 ##' @param singlezone coerce all data to a single zone;  default TRUE, if FALSE, each location gets its own zone, and the vector of UTM zones is returned. 
 ##' @param zone the zone to coerce to - if NULL (default), use the zone of the mid-point of the longitude 
 ##' @return data frame with columns X and Y in automatically selected zone. 

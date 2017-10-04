@@ -8,7 +8,7 @@
 #' @param ... options to be passed to plot functions
 
 #' @export
-plot.movetrack <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
+plot.movetrack <- function(x, y=NULL, time = NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, col = NULL, ...){
             if (is.null(id))
               ids <- unique(x$id) else
                 ids <- id
@@ -24,10 +24,12 @@ plot.movetrack <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,
 
                 par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
 
+                if(is.null(col)) col = rgb(0,0,0,.5)
+                
                 with(di, expr = {
-                  plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
-                  plot(time,x, type="o", pch=19, col=rgb(0,0,0,.5), xaxt="n", xlab="", cex=0.5,...)
-                  plot(time,y, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+                  plot(x,y,asp=1, type="o", pch=19, col=col, cex=0.5,...)
+                  plot(time,x, type="o", pch=19, col=col, xaxt="n", xlab="", cex=0.5,...)
+                  plot(time,y, type="o", pch=19, col=col, cex=0.5,...)
                   title(paste('ID :', ids[i]), outer = TRUE, xpd=NA)
                 })
 
