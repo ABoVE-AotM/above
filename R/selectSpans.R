@@ -1,6 +1,7 @@
 #' Select spans for multimigration analysis
 #' 
 #' @details This function provides an interactive interface for picking out analysis windows for a multi migration analysis. Basically - follow the instructions at the top of the figure
+#' @export
 #' 
 #' 
 #' @param {time,x,y} migration data

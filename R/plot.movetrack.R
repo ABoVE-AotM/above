@@ -1,16 +1,14 @@
 #' Quick plot of a track (against x-y-time)
 #' 
-#' Plotting x-y, time-x, time-y scan of a track.  This function will take x, y, and time coordinates or a \code{track} class object
+#' Plotting x-y, time-x, time-y scan of a track.  This function will take x, y, and time coordinates or a \code{movetrack} class object
 #' 
 #' @param x is a 'track' class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"
 #' @param id id of animal(s) to plot.  If NULL - use subset or first animal. 
 #' @param exportPDF a logical indicating whether or not to export a PDF of all animal tracks to the local working directory (default=FALSE).
 #' @param ... options to be passed to plot functions
-#' @export 
 
-
-
-plot.track <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, ...){
+#' @export
+plot.movetrack <- function(x, y=NULL, time = NULL, id = NULL, layout = NULL, auto.par = NULL,  exportPDF = FALSE, col = NULL, ...){
             if (is.null(id))
               ids <- unique(x$id) else
                 ids <- id
@@ -26,10 +24,12 @@ plot.track <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  ex
 
                 par(mar = c(0,4,0,0), oma = c(4,0,4,4), xpd = NA)
 
+                if(is.null(col)) col = rgb(0,0,0,.5)
+                
                 with(di, expr = {
-                  plot(x,y,asp=1, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
-                  plot(time,x, type="o", pch=19, col=rgb(0,0,0,.5), xaxt="n", xlab="", cex=0.5,...)
-                  plot(time,y, type="o", pch=19, col=rgb(0,0,0,.5), cex=0.5,...)
+                  plot(x,y,asp=1, type="o", pch=19, col=col, cex=0.5,...)
+                  plot(time,x, type="o", pch=19, col=col, xaxt="n", xlab="", cex=0.5,...)
+                  plot(time,y, type="o", pch=19, col=col, cex=0.5,...)
                   title(paste('ID :', ids[i]), outer = TRUE, xpd=NA)
                 })
 
@@ -40,6 +40,11 @@ plot.track <- function(x, y=NULL, id = NULL, layout = NULL, auto.par = NULL,  ex
               if (exportPDF)
                 dev.off()
           }
+
+#plot <- function (movetrack, ...) {
+#  UseMethod("plot", movetrack)
+#}
+
 
 
 #setMethod(f="plot", 

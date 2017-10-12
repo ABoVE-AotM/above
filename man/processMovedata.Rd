@@ -5,27 +5,70 @@
 \title{process Move data}
 \usage{
 processMovedata(movedata, xyNames = c("location_long", "location_lat"),
-  idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
+  idcolumn = "individual_id", proj4 = NULL, projTo = NULL, utm = FALSE,
   keepCols = NULL, dailymean = FALSE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
 
-\item{idcolumn}{name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe ""individual_id" ... this is confusing!}
+\item{idcolumn}{name of the id column - depends on properties of the movebank data.  The default "individual_id" is often good.  Other options are "deployment_id" or maybe "individual_id" ... this is confusing!}
 
 \item{proj4}{the projection (as a crs string) for input data.  If it is left empty and \code{movedata} is a \code{Move} object, it will carry over the projection from the original data.  If \code{movedata} is a data frame, it will use the "WGS84" projection, using the midpoint of the longitudes and latitudes in the data, i.e. (min(long,lat) + max(long,lat))/2.}
 
-\item{projTo}{a crs string for (re)projecting input data.}
+\item{projTo}{a crs string for (re)projecting input data (if \code{utm} is FALSE).}
+
+\item{utm}{whether to convert to UTM coordinates - using the central longitude to select the zone.  This is best for data of relatively small extent.}
+
+\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns.}
+
+\item{dailymean}{whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date}
 
 \item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
+
+\item{keepCols}{scd: to see available info to retain see the reference data for the study using getMovebank("tag"), getMovebank("individual"), getMovebank("deployment"), or IMO better to get all of it as a single table excluding unused attributes by downloading from Movebank (Download > Download Reference Data).}
 
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
 }
 \value{
-Returns a data frame with columns "id", "time" (POSIXct), '"lon", "lat", "x", "y", "time", and any columns named in keepCols argument.  If getVT = TRUE, "z", "z.start", "z.end" (complex numbers indicating location), 'stepLength' (step length), 'phi' and 'theta' (absolute and relative turning angles, respectively), 't.start', 't.end', 't.mid' (numeric time), dT (difference in time over step), 'v' (velocity, default meters / hour), 't.mid.POSIX' (time mid point in POSIX), and if dailymean = TRUE, "day" (day since Jan 1 of first year) and "day.time". If returnOutliers = TRUE and returnSPDF = FALSE, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
+Returns a data frame with columns:
+ \itemize{
+ \item id
+ \item time - POSIXct
+ \item lon, lat
+ \item x, y 
+ \item time
+ \item  any columns named in keepCols argument
+ } 
+ TO DO - add tags: 
+ If \code{getVT = TRUE}, also returns:
+ \itemize{ 
+ \item z, z.start, z.end - complex numbers indicating locations of steps
+ \item stepLength
+ \item phi, theta - absolute and relative turning angles, respectively
+ \item t.start, t.end, t.mid - numeric time, 
+ \item dT - difference in time over step, 
+ \item v - velocity, default meters / hour
+ \item t.mid.POSIX - time mid point in POSIX
+ }
+ If \code{dailymean = TRUE}, \itemize{
+ \item day - day since Jan 1 of first year
+ \item day.time.}
+ If \code{returnOutliers = TRUE} and \code{returnSPDF = FALSE}, a list of two elements containing the valid locations ($valid or list[[1]]) or outliers ($flaggedOutliers or list[[2]]).
+scd: For "time", note possible issues with timezones changing when moveStacks are created: https://gitlab.com/bartk/move/issues/6
 }
 \description{
 Transforms a movebank object into an (optionally) daily averaged simplified data frame that is a "movetrack" class object.
+}
+\details{
+Regarding the \code{idcolumn} issues, SCD has the following insights (2017-06): 
+
+\emph{Even more than confusing, this is a possible cause of error. There is a current bug in move whereby when data are accessed using \code{\link{getMovebankData}}, the tracks will be separated by deployment rather than individual. In cases that an individual has been tracked over multiple deployments, each deployment will be incorrectly understood to be and analyzed as a separate animal. See \url{https://gitlab.com/bartk/move/issues/2}
+
+\code{deployment_id} is in general not an appropriate idcolumn to use, for the same reason described above. Many of our studies include individuals with multiple deployments.
+
+\code{idcolumn} should ideally show \code{animalName} or \code{individual_local_identifier}, i.e. the "animal id" in Movebank. sometimes move uses the internal database ids, e.g. \code{individual_id} which is difficult to link back to the animal in Movebank.
+
+Currently in some cases \code{coords.x1} and \code{coords.x2} are used instead of \code{location.long}, \code{location.lat}. See \url{https://gitlab.com/bartk/move/issues/5} and \url{https://gitlab.com/bartk/move/issues/3}}
 }
 \examples{
 ### Enter Login and Password information for Movebank
@@ -39,15 +82,20 @@ ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", log
 # Estimate daily mean locations
 ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE)
 
+# Three convenient "movetrack" methods:
+summary(ge1.dailymean)
+plot(ge1.dailymean)
+map(ge1.dailymean)
+
 
 # one bird, three deployments
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
-# Estimate daily mean locations
-ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = FALSE)
-
-# Plot daily movements (currently only displays 1 individual)
-plot(ge2.dailymean)
+# all locations and all columns
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", keepCols = "all")
+summary(ge2.dailymean)
+plot(ge2.dailymean, id = ge2.dailymean$id[1])
+map(ge2.dailymean)
 }
 \seealso{
 \link{map.track}, \link{plot.track}, \link{SpatialPointsDataFrame}, \link{pointDistance}

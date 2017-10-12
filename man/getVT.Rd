@@ -4,7 +4,7 @@
 \alias{getVT}
 \title{Generate vector statistics}
 \usage{
-getVT(track, ...)
+getVT(track, units = "hours", geoDist = FALSE)
 }
 \arguments{
 \item{track}{a track object generated using \code{processMovedata}}

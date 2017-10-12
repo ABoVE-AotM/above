@@ -89,7 +89,7 @@ ge1.simple <- processMovedata(ge1, idcolumn = "deployment_id")
 head(ge1.simple)
 ```
 
-This is a `movebank` object, which has some convenient methods:
+This is a `track` object (specific for this package), which has some convenient methods:
 
 ```{r}
 summary(ge1.simple)
@@ -103,6 +103,13 @@ The plotting function is similar to the `scan.track` function in `marcher`
 ```{r, eval = FALSE}
 plot(ge1.simple)
 ```
+```{r, echo = FALSE}
+png("./plots/ge1.png")
+plot(ge1.simple)
+dev.off()
+```
+
+![]("./plots/ge1.png")
 
 For the second data set (`ge2`) there are three deployments of 1 eagle, each with a unique identifier. 
 
@@ -112,6 +119,17 @@ summary(ge2.simple)
 ```
 
 And we see a simple straight one-time migration in these data. 
+```{r, eval = FALSE}
+plot(subset(ge2.simple, id == "196430584"))
+```
+
+```{r, echo = FALSE}
+png("./plots/ge2.png")
+plot(subset(ge2.simple, id == "196430584"))
+dev.off()
+```
+
+![]("./plots/ge2.png")
 
 #### Migration analysis
 

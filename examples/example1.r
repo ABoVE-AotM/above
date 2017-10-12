@@ -9,12 +9,17 @@ ge1 <- getMovebankData(study="ABoVE: HawkWatch International Golden Eagles", log
 # Estimate daily mean locations
 ge1.dailymean <- processMovedata(ge1,  id = "individual_id", dailymean = TRUE)
 
+# Three convenient "movetrack" methods:
+summary(ge1.dailymean)
+plot(ge1.dailymean)
+map(ge1.dailymean)
+
 
 # one bird, three deployments
 ge2 <- getMovebankData(study="Aquila chrysaetos interior west N. America, Craigs, Fuller", animalName="629-26704", login=login) 
 
-# Estimate daily mean locations
-ge2.dailymean <- processMovedata(ge2,  id = "individual_id", dailymean = FALSE)
-
-# Plot daily movements (currently only displays 1 individual)
-plot(ge2.dailymean)
+# all locations and all columns
+ge2.dailymean <- processMovedata(ge2,  id = "individual_id", keepCols = "all")
+summary(ge2.dailymean)
+plot(ge2.dailymean, id = ge2.dailymean$id[1])
+map(ge2.dailymean)
