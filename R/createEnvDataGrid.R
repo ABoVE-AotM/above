@@ -24,6 +24,7 @@
 createEnvDataGrid <- function(lats, lons, start, finish, dt, 
                               savefile = FALSE, fileout = "latlontime.csv"){  
   
+  if(dt == 0) times <- start + hms("00:00:00.001") else
   times <- seq(start + hms("00:00:00.001"), finish + hms("00:00:00.001"), length = (finish - start)/dt) 
   times.formatted <- paste0(as.character(times), ".000") 
   

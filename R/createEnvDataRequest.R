@@ -12,13 +12,15 @@
 #' type_name <- "modis-land/MOD13A1.005"
 #' variable_name <- "500m 16 days EVI"
 #' interpolation_type <- "bilinear"
-#' createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type)
+#' createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type, savefile = TRUE, fileout = "testfile.xml")
 
 createEnvDataRequest  <- function(request_name = "MyRequest", 
                                   type_name, variable_name,  
                                   interpolation_type,
                                   dist_func_spatial="geodetic",
-                                  email = "me@my.place") {
+                                  email = "me@my.place",
+                                  savefile = FALSE, 
+                                  fileout = "myrequest.xml") {
   
   variable_label <- paste(type_name, "/", variable_name, sep = "")
   
@@ -29,5 +31,12 @@ createEnvDataRequest  <- function(request_name = "MyRequest",
                xmlNode("AnnotationRequestElementProperty", attrs=list(name="variable-names", value=variable_name)))
   b <- xmlNode("AnnotationRequestElement", attrs=c(variableLabel=variable_label), a)
   c <- xmlNode("Elements", b)
-  xmlNode("AnnotationRequest", attrs=list(annotationType="track2", name=request_name, notificationEmail=email), c)	
+  
+  Request_xml <- xmlNode("AnnotationRequest", attrs=list(annotationType="track2", name=request_name, notificationEmail=email), c)	
+  
+  if(savefile){
+    cat("Saving xml request to", fileout)
+    cat(saveXML(Request_xml), file = fileout)
+  }
+  else return(Request_xml)
 }

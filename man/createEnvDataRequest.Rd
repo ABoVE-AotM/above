@@ -5,7 +5,8 @@
 \title{Creates EnvData query XML}
 \usage{
 createEnvDataRequest(request_name = "MyRequest", type_name, variable_name,
-  interpolation_type, dist_func_spatial = "geodetic", email = "me@my.place")
+  interpolation_type, dist_func_spatial = "geodetic", email = "me@my.place",
+  savefile = FALSE, fileout = "myrequest.xml")
 }
 \arguments{
 \item{request_name}{Name for request}
@@ -29,5 +30,5 @@ request_name <- "EVI_request"
 type_name <- "modis-land/MOD13A1.005"
 variable_name <- "500m 16 days EVI"
 interpolation_type <- "bilinear"
-createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type)
+createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type, savefile = TRUE, fileout = "testfile.xml")
 }
