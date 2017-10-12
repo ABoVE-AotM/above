@@ -11,7 +11,7 @@ quickUTM(lon, lat, singlezone = TRUE, zone = NULL)
 
 \item{zone}{the zone to coerce to - if NULL (default), use the zone of the mid-point of the longitude}
 
-\item{{lon, lat}}{vectord of longituded and latitudes.}
+\item{{lon, lat}}{vectors of longitude and latitude.}
 }
 \value{
 data frame with columns X and Y in automatically selected zone.

@@ -1,0 +1,33 @@
+#' Creates EnvData query XML 
+#' 
+#' @param request_name Name for request
+#' @param type_name Data type requested (e.g. "modis-land/MOD13A1.005"). Go to \link{http://www.bioinfo.mpg.de/orn-gateway/services2.jsp} to see list. To be entered exactly as seen with no spaces. 
+#' @param interpolation_type One of "bilinear", "inverse-distance-weighted", "nearest-neighbor".  See \link{https://www.movebank.org/node/6400} for details
+#' @param variable_name Variable name (e.g. "500m 16 days EVI").  See list at link above. 
+#' @param dist_func_spatial function used for distance computation ... "geodetic" default generally fine. 
+#' @return a \code\link{XMLNode} object which enters the request infromation onto the online EnvData form. 
+#' 
+#' @examples 
+#' request_name <- "EVI_request"
+#' type_name <- "modis-land/MOD13A1.005"
+#' variable_name <- "500m 16 days EVI"
+#' interpolation_type <- "bilinear"
+#' createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type)
+
+createEnvDataRequest  <- function(request_name = "MyRequest", 
+                                  type_name, variable_name,  
+                                  interpolation_type,
+                                  dist_func_spatial="geodetic",
+                                  email = "me@my.place") {
+  
+  variable_label <- paste(type_name, "/", variable_name, sep = "")
+  
+  a <- xmlNode("Properties", xmlNode("AnnotationRequestElementProperty", attrs=list(name="interpolation-type", value=interpolation_type)), 
+               xmlNode("AnnotationRequestElementProperty", attrs=list(name="type-name", value=type_name)), 
+               xmlNode("AnnotationRequestElementProperty", attrs=list(name="type", value="simple")), 
+               xmlNode("AnnotationRequestElementProperty", attrs=list(name="distance-function-spatial", value=dist_func_spatial)), 
+               xmlNode("AnnotationRequestElementProperty", attrs=list(name="variable-names", value=variable_name)))
+  b <- xmlNode("AnnotationRequestElement", attrs=c(variableLabel=variable_label), a)
+  c <- xmlNode("Elements", b)
+  xmlNode("AnnotationRequest", attrs=list(annotationType="track2", name=request_name, notificationEmail=email), c)	
+}

@@ -21,7 +21,6 @@
 ##' 
 ##' @export
 
-
 createEnvDataGrid <- function(lats, lons, start, finish, dt, 
                               savefile = FALSE, fileout = "latlontime.csv"){  
   

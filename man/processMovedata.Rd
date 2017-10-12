@@ -23,8 +23,6 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 
 \item{dailymean}{whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date}
 
-\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).}
-
 \item{keepCols}{scd: to see available info to retain see the reference data for the study using getMovebank("tag"), getMovebank("individual"), getMovebank("deployment"), or IMO better to get all of it as a single table excluding unused attributes by downloading from Movebank (Download > Download Reference Data).}
 
 \item{dailymean}{whether or not to compute the daily mean - useful for the migration analysis.}
