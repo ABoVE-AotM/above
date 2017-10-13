@@ -2,11 +2,11 @@
 % Please edit documentation in R/createEnvDataRequest.R
 \name{createEnvDataRequest}
 \alias{createEnvDataRequest}
-\title{Creates EnvData query XML}
+\title{Creates EnvData XML query}
 \usage{
 createEnvDataRequest(request_name = "MyRequest", type_name, variable_name,
   interpolation_type, dist_func_spatial = "geodetic", email = "me@my.place",
-  savefile = FALSE, fileout = "myrequest.xml")
+  savefile = TRUE, fileout = NULL)
 }
 \arguments{
 \item{request_name}{Name for request}
@@ -18,12 +18,18 @@ createEnvDataRequest(request_name = "MyRequest", type_name, variable_name,
 \item{interpolation_type}{One of "bilinear", "inverse-distance-weighted", "nearest-neighbor".  See \link{https://www.movebank.org/node/6400} for details}
 
 \item{dist_func_spatial}{function used for distance computation ... "geodetic" default generally fine.}
+
+\item{email}{email address for notification}
+
+\item{savefile}{whether or not to save a file (for actual use, must be TRUE)}
+
+\item{fileout}{a file name - will be prompted if left empty}
 }
 \value{
 a \code\link{XMLNode} object which enters the request infromation onto the online EnvData form.
 }
 \description{
-Creates EnvData query XML
+Creates EnvData XML query
 }
 \examples{
 request_name <- "EVI_request"
@@ -31,4 +37,7 @@ type_name <- "modis-land/MOD13A1.005"
 variable_name <- "500m 16 days EVI"
 interpolation_type <- "bilinear"
 createEnvDataRequest("MyRequest", type_name, variable_name, interpolation_type, savefile = TRUE, fileout = "testfile.xml")
+}
+\seealso{
+createEnvDataGrid, uploadEnvDataRequest
 }

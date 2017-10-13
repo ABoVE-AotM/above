@@ -7,10 +7,10 @@
 ##' @param dt time interval between desired time points. 
 ##' @param savefile whether to save a csv file
 ##' @param fileout name of csv file to save
+##' @seealso createEnvDataRequest, uploadEnvDataRequest
 ##' 
 ##' @return Either nothing (if csv file saved) or the character string data frame with correct formatting. 
 ##' @examples 
-##'  require(lubridate)
 ##'  lats <- seq(38.8, 39.0, length = 40)
 ##'  lons <- seq(-77.12, -76.91, length = 40) 
 ##'  start <- ymd("2014-01-01")
@@ -21,11 +21,11 @@
 ##' 
 ##' @export
 
-createEnvDataGrid <- function(lats, lons, start, finish, dt, 
-                              savefile = FALSE, fileout = "latlontime.csv"){  
+createEnvDataGrid <- function(lats, lons, start, finish = start, dt = 0, 
+                              savefile = TRUE, fileout = NULL){  
   
-  if(dt == 0) times <- start + hms("00:00:00.001") else
-  times <- seq(start + hms("00:00:00.001"), finish + hms("00:00:00.001"), length = (finish - start)/dt) 
+  if(dt == as.duration(0)) times <- start + hms("00:00:00.001") else
+  times <- seq(start + hms("00:00:00.001"), finish + hms("00:00:00.001"), by = dt)
   times.formatted <- paste0(as.character(times), ".000") 
   
   latlontime <- expand.grid(lats, lons, times.formatted) 
@@ -34,13 +34,14 @@ createEnvDataGrid <- function(lats, lons, start, finish, dt,
                              'location-lat' = latlontime$Var1,
                              'height-above-ellipsoid' = "")
   if(savefile){ 
+    if(is.null(fileout))
+      fileout <- readline(prompt="Please provide filename to save to: ")
+      
     cat("Saving formatted data to", fileout)
-    write.csv(latlongtime.formatted, file = fileout)
+    write.csv(latlongtime.formatted, file = fileout, row.names = FALSE)
   } else
   return(latlongtime.formatted)
 }  
   
   
-#' example
- 
   

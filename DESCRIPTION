@@ -8,17 +8,9 @@ Author: Elie Gurarie, Peter Mahoney, Scott LaPoint and others
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
-Depends: move, magrittr, plyr, lubridate, scales, ggmap, mapproj
+Depends: move, magrittr, plyr, lubridate, scales, ggmap, mapproj, XML, RCurl
 Imports:
-    MASS,
-    parallel,
-    survival,
-    nlme,
-    rgdal,
-    marcher,
-    scales,
-    XML,
-    RCurl
+    MASS, parallel, survival, nlme, rgdal, marcher, scales, RCurl
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:

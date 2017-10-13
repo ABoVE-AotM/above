@@ -1,9 +1,3 @@
-### Personal data:
-
-login <- ... # 
-pw <- ... #
-email <- ... # 
-
 # specify names of data file to annotate (e.g. output of grid) and xml file with the request
 
 csv.file <- "../sandbox/testdata.csv"
@@ -31,4 +25,5 @@ createEnvDataRequest(request_name = "TestRequest",
                      fileout = xml.file)
 
 # send the request to the server
-uploadEnvDataRequest(csv.file, xml.file, login, pw, link.file = "annotation_status_link.url")
+uploadEnvDataRequest(csv.file, xml.file, 
+                     link.file = "annotation_status_link.url")

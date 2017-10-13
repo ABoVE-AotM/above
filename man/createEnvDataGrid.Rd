@@ -4,8 +4,8 @@
 \alias{createEnvDataGrid}
 \title{Create gridded data for querying Movebank Env-Data}
 \usage{
-createEnvDataGrid(lats, lons, start, finish, dt, savefile = FALSE,
-  fileout = "latlontime.csv")
+createEnvDataGrid(lats, lons, start, finish = start, dt = 0,
+  savefile = TRUE, fileout = NULL)
 }
 \arguments{
 \item{dt}{time interval between desired time points.}
@@ -25,7 +25,6 @@ Either nothing (if csv file saved) or the character string data frame with corre
 Takes a vector of latitudes and longitudes (typically evenly spaced) and a vector of times and generates the strictly formatted data frame needed to upload to Env-Data to obtain covariates for movebank.  Essentially, an R-based substitute for the "gridded data" tool.
 }
 \examples{
- require(lubridate)
  lats <- seq(38.8, 39.0, length = 40)
  lons <- seq(-77.12, -76.91, length = 40) 
  start <- ymd("2014-01-01")
@@ -34,4 +33,7 @@ Takes a vector of latitudes and longitudes (typically evenly spaced) and a vecto
  example <- createEnvDataGrid(lats, lons, start, finish, dt, savefile = FALSE)
  head(example)
 
+}
+\seealso{
+createEnvDataRequest, uploadEnvDataRequest
 }
