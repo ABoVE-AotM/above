@@ -4,7 +4,7 @@
 \alias{uploadEnvDataRequest}
 \title{Upload an Env-Data request for Annotation}
 \usage{
-uploadEnvDataRequest(csv.file, xml.file, login = NULL, pw = NULL,
+uploadEnvDataRequest(csv.file, xml.file, login = NULL, password = NULL,
   link.file = "annotation_status_link.url")
 }
 \arguments{
@@ -14,7 +14,7 @@ uploadEnvDataRequest(csv.file, xml.file, login = NULL, pw = NULL,
 
 \item{link.file}{name of link to access status and final annotated data}
 
-\item{{login, pw}}{login and password for EnvData (NOT the same as MoveBank login and password)}
+\item{{login, password}}{login and password for EnvData (NOT the same as MoveBank login and password)}
 }
 \description{
 Upload an Env-Data request for Annotation
