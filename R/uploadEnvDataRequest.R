@@ -26,7 +26,7 @@ uploadEnvDataRequest <- function(csv.file, xml.file,
   
   postForm('http://www.bioinfo.mpg.de/orn-gateway/request-annotation-xml-2.jsp', 
            request = XML_upload, tracks = CSV_upload, 
-           .params = list(login = login, password = pw), 
+           .params = list(login = login, password = password), 
            .opts = curlOptions(headerfunction = h$update, writefunction = b$update, verbose = TRUE))
   
   url <- h$value()['Location']
