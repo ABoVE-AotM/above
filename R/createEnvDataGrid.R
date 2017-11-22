@@ -37,7 +37,7 @@ createEnvDataGrid <- function(lats, lons, start, finish = start, dt = 0,
     if(is.null(fileout))
       fileout <- readline(prompt="Please provide filename to save to: ")
       
-    cat("Saving formatted data to", fileout)
+    cat("Saving formatted data to", fileout, "\n")
     write.csv(latlongtime.formatted, file = fileout, row.names = FALSE)
   } else
   return(latlongtime.formatted)

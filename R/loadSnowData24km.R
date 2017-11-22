@@ -1,7 +1,9 @@
 #' NSIDC Snow Model Functions
 #' 
-#' This function processes (and optionally plots) the 24km x 24km snow ice data.  AN additonal function \code{plotSnowData} conveniently maps the output.  
+#' This function downloads 24km x 24km snow ice data from the NSIDS repository (\link{ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/}) and processes the data.  An additonal function \code{plotSnowData} conveniently maps the output.  
 #' 
+#' @year 
+#' @param {year,day} to download the data 
 #' @param {filename,directory} of the ascii raw snow file
 #' @param northamerica whether to limit to North America
 #' @param water whether or not to include the open water category 
@@ -18,19 +20,21 @@
 #' @references National Ice Center. 2008, updated daily. IMS Daily Northern Hemisphere Snow and Ice Analysis at 1 km, 4 km, and 24 km Resolutions, Version 1. [Indicate subset used]. Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: http://dx.doi.org/10.7265/N52R3PMC. [Date Accessed].
 #' @export
 #' @examples
-#' \dontrun{
-#' filename <- "ims2011150_24km_v1.2.asc"
-#' directory <- "C:/Users/Elie/Box Sync/ABoVE/springmigrations/Hagos/SnowData"
-#' snow.data <- loadSnowData24km(filename, directory)
-#' }
 #' #  The output is equivalent to the saved examples in \code{\link{snow24km}}
-#' data(snow24km)
-#' plotSnowData(snow.2011.016); title("Jan 16, 2011")
+#' snow.data <- loadSnowData24km(2011, 16)
+#' plotSnowData(snow.data); title("Jan 16, 2011")
 #' 
 
-loadSnowData24km <- function(filename, directory = ".", plot = FALSE, northamerica = TRUE, water = FALSE){
+loadSnowData24km <- function(year, day, filename=NULL, directory = ".", plot = FALSE, northamerica = TRUE, water = FALSE){
+ 
+if(is.null(filename)){ 
+  rawdata <- paste0("ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/24km/",year,"/ims",year,tripledigit(day),"_24km_v1.2.asc.gz") 
   
-  snow <- read.table(paste0(directory,"/",filename), skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix
+  download.file(rawdata, destfile = paste0(tempdir(), "\\snowdata.gz"))
+  con <- gzfile(paste0(tempdir(),"\\snowdata.gz"))
+  snow <- read.table(con, skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix
+} else { snow <- read.table(paste0(directory,"/",filename), skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix }
+  
   snow.matrix <- aaply(snow, 1, function(s)
     strsplit(s, "", fixed = TRUE)[[1]] %>% as.numeric
   ) %>% t
@@ -60,4 +64,11 @@ plotSnowData <- function(snow.df){
     maps::map("worldHires", add = TRUE, col=grey(.3))
     box(lwd = 2)
     legend("bottomleft", fill = cols[3:5], legend = c("no snow", "sea ice", "snow"), bg = "white")
+}
+
+tripledigit <- function(n){
+  n.triple <- ifelse(nchar(n) == 3, as.character(n), 
+                     ifelse(nchar(n) == 2, paste0("0",n), 
+                            paste0("00",n)))
+  return(n.triple)
 }

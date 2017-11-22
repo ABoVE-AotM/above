@@ -41,7 +41,7 @@ createEnvDataRequest  <- function(request_name = "MyRequest",
   if(savefile){
     if(is.null(fileout)) 
       fileout <- readline(prompt="Please provide filename for XML request: ")
-    cat("Saving xml request to", fileout)
+    cat("Saving xml request to", fileout, "\n")
     cat(saveXML(Request_xml), file = fileout)
   }
   else return(Request_xml)
