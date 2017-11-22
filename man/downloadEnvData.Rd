@@ -7,7 +7,7 @@
 downloadEnvData(header, returndata = TRUE, filename = NULL)
 }
 \arguments{
-\item{header}{the header file outputted by \code{\link{uploadEnvDataRequest.R}}}
+\item{header}{the header file outputted by \code{\link{uploadEnvDataRequest}}}
 
 \item{returndata}{whether to return the data directly}
 

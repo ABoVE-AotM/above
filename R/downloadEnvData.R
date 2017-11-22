@@ -1,6 +1,6 @@
 ##' Download and return annotated data from EnvData
 ##' 
-##' @param header the header file outputted by \code{\link{uploadEnvDataRequest.R}}
+##' @param header the header file outputted by \code{\link{uploadEnvDataRequest}}
 ##' @param returndata whether to return the data directly
 ##' @param filename filename (and location) to save annotated data to.  If left empty, user will be prompted.
 ##' 
