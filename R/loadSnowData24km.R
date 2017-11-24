@@ -2,12 +2,12 @@
 #' 
 #' This function downloads 24km x 24km snow ice data from the NSIDS repository (\link{ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/}) and processes the data.  An additonal function \code{plotSnowData} conveniently maps the output.  
 #' 
-#' @year 
-#' @param {year,day} to download the data 
-#' @param {filename,directory} of the ascii raw snow file
+#' @param {year,day} of data to download
+#' @param {filename,directory} of the ascii raw snow file if raw data are already downloaded
 #' @param northamerica whether to limit to North America
 #' @param water whether or not to include the open water category 
 #' @param plot whether to plot the map.
+#' @param ... additional arguments to pass to polygon function
 #' @return a data frame that contains:  
 #' \describe{
 #'   \item{snow}{snow coverage: 1 = open water, 2 = no snow, 3 = sea ice, 4 = snow}
@@ -50,7 +50,7 @@ if(is.null(filename)){
 }
 
 #' @export
-plotSnowData <- function(snow.df){
+plotSnowData <- function(snow.df, ...){
     require(mapdata)
     plot.new()
     cols <- c(NA, NA, "forestgreen", "wheat", "white")
@@ -59,7 +59,7 @@ plotSnowData <- function(snow.df){
     apply(as.matrix(snow.df), 1, function(m) 
       polygon(x = c(m["lon.ll"], m["lon.ul"], m["lon.ur"], m["lon.lr"]), 
               y = c(m["lat.ll"], m["lat.ul"], m["lat.ur"], m["lat.lr"]), 
-              col = cols[Re(m["snow"])+1], bor = NA))
+              col = cols[Re(m["snow"])+1], ...))
     axis(1); axis(2)	
     maps::map("worldHires", add = TRUE, col=grey(.3))
     box(lwd = 2)

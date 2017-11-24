@@ -14,9 +14,11 @@ loadSnowData24km(year, day, filename = NULL, directory = ".",
 
 \item{water}{whether or not to include the open water category}
 
-\item{{year, day}}{to download the data}
+\item{{year, day}}{of data to download}
 
-\item{{filename, directory}}{of the ascii raw snow file}
+\item{{filename, directory}}{of the ascii raw snow file if raw data are already downloaded}
+
+\item{...}{additional arguments to pass to polygon function}
 }
 \value{
 a data frame that contains:  
