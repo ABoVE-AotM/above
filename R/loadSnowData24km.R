@@ -25,12 +25,16 @@
 #' plotSnowData(snow.data); title("Jan 16, 2011")
 #' 
 
-loadSnowData24km <- function(year, day, filename=NULL, directory = ".", plot = FALSE, northamerica = TRUE, water = FALSE){
+loadSnowData24km <- function(year, day, filename=NULL, directory = ".", plot = FALSE, northamerica = TRUE, water = FALSE, ...){
  
 if(is.null(filename)){ 
+  if(year <= 2014)
   rawdata <- paste0("ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/24km/",year,"/ims",year,tripledigit(day),"_24km_v1.2.asc.gz") 
+  if(year >= 2015)
+  rawdata <- paste0("ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/24km/",year,"/ims",year,tripledigit(day),"_24km_v1.3.asc.gz")
   
   download.file(rawdata, destfile = paste0(tempdir(), "\\snowdata.gz"))
+  
   con <- gzfile(paste0(tempdir(),"\\snowdata.gz"))
   snow <- read.table(con, skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix
 } else { snow <- read.table(paste0(directory,"/",filename), skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix }
@@ -45,26 +49,30 @@ if(is.null(filename)){
   snow.df <- mutate(lonlat.df, snow = as.vector(snow.matrix)) %>% subset(!is.na(lat) & !is.na(lon))
   if(northamerica) snow.df <- subset(snow.df, lon > -175 & lon < -30 & lat > 30 & lat < 85)
   if(!water) snow.df <- subset(snow.df, snow != 1)
-  if(plot) plotSnowData(snow.df)
+  if(plot) plotSnowData(snow.df, ...)
   return(snow.df)
 }
 
 #' @export
-plotSnowData <- function(snow.df, ...){
-    require(mapdata)
-    plot.new()
-    cols <- c(NA, NA, "forestgreen", "wheat", "white")
-    par(usr = with(snow.df, c(min(lon), max(lon), min(lat), max(lat))))
-    rect(-180, 0, 0, 90, col="darkcyan")
-    apply(as.matrix(snow.df), 1, function(m) 
-      polygon(x = c(m["lon.ll"], m["lon.ul"], m["lon.ur"], m["lon.lr"]), 
-              y = c(m["lat.ll"], m["lat.ul"], m["lat.ur"], m["lat.lr"]), 
-              col = cols[Re(m["snow"])+1], ...))
-    axis(1); axis(2)	
-    maps::map("worldHires", add = TRUE, col=grey(.3))
-    box(lwd = 2)
-    legend("bottomleft", fill = cols[3:5], legend = c("no snow", "sea ice", "snow"), bg = "white")
+plotSnowData <- function(snow.df, legend = TRUE, axis = TRUE, ...){
+  require(mapdata)
+  plot.new()
+  cols <- c(NA, NA, "forestgreen", "wheat", "white")
+  par(usr = with(snow.df, c(min(lon), max(lon), min(lat), max(lat))))
+  rect(-180, 0, 0, 90, col="darkcyan")
+  snow.m <- with(snow.df, cbind(lon.ll, lon.ul, lon.ur, lon.lr, lat.ll, lat.ul, lat.ur, lat.lr, snow))
+  apply(snow.m, 1, function(m) 
+    polygon(x = c(m["lon.ll"], m["lon.ul"], m["lon.ur"], m["lon.lr"]), 
+            y = c(m["lat.ll"], m["lat.ul"], m["lat.ur"], m["lat.lr"]), 
+            col = cols[Re(m["snow"])+1], ...))
+     
+  maps::map("worldHires", add = TRUE, col=grey(.3))
+  box(lwd = 2)
+  if(legend)
+  legend("bottomleft", fill = cols[3:5], legend = c("no snow", "sea ice", "snow"), bg = "white")
+  if(axis){ axis(1); axis(2) }
 }
+
 
 tripledigit <- function(n){
   n.triple <- ifelse(nchar(n) == 3, as.character(n), 
