@@ -15,7 +15,7 @@ map(movetrack, ...)
 
 \item{individually}{whether to produce plots individually (TRUE) or as a population (FALSE; default).}
 
-\item{projection}{one of the options from \link{\code{mapproject}}.  Default - "albers", which seems to be best for  (must be character string).}
+\item{projection}{one of the options from \code{\link{mapproject}}.  Default - "albers", which seems to be best for  (must be character string).}
 
 \item{print}{whether or not to print map.  Default TRUE}
 

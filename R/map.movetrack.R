@@ -6,7 +6,7 @@
 #' @param movetrack a \code{movetrack} class object, or any data-frame that contains (at least) three columns labeled "time", "x" and "y"
 #' @param id a vector of individuals to map (default = NULL - plots all individuals)
 #' @param individually whether to produce plots individually (TRUE) or as a population (FALSE; default).
-#' @param projection one of the options from \link{\code{mapproject}}.  Default - "albers", which seems to be best for  (must be character string). 
+#' @param projection one of the options from \code{\link{mapproject}}.  Default - "albers", which seems to be best for  (must be character string). 
 #' @param print whether or not to print map.  Default TRUE
 #' @param exportPDF a logical indicating whether or not to export plots as a PDF (default = FALSE).
 #' @param ... additional parameters to pass to \code{\link{ggmap}}

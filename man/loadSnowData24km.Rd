@@ -5,7 +5,7 @@
 \title{NSIDC Snow Model Functions}
 \usage{
 loadSnowData24km(year, day, filename = NULL, directory = ".",
-  plot = FALSE, northamerica = TRUE, water = FALSE)
+  plot = FALSE, northamerica = TRUE, water = FALSE, ...)
 }
 \arguments{
 \item{plot}{whether to plot the map.}
@@ -14,11 +14,11 @@ loadSnowData24km(year, day, filename = NULL, directory = ".",
 
 \item{water}{whether or not to include the open water category}
 
+\item{...}{additional arguments to pass to polygon function}
+
 \item{{year, day}}{of data to download}
 
 \item{{filename, directory}}{of the ascii raw snow file if raw data are already downloaded}
-
-\item{...}{additional arguments to pass to polygon function}
 }
 \value{
 a data frame that contains:  
