@@ -43,3 +43,38 @@ NULL
 #' 
 #' @source National Ice Center. 2008, updated daily. IMS Daily Northern Hemisphere Snow and Ice Analysis at 1 km, 4 km, and 24 km Resolutions, Version 1. Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: \link{http://dx.doi.org/10.7265/N52R3PMC}. 
 NULL
+
+#' Oscillations
+#'
+#' Monthly averages of large-scaled climate oscillations in the northern hemisphere: Pacific Decadal (PDO), Arctic (AO) and North Atlantic (NAO) from January 1950 to December 2017.
+#' 
+#' @format  data frame with 7 columns:
+#' \describe{
+#'   \item{year}{beginning 1950}
+#'   \item{month}{1-12}
+#'   \item{PDO}{indices are roughly standard normal ...}
+#'   \item{AO}{}
+#'   \item{NAO}{}
+#'   \item{season}{October:March = winter;  April:September = summer}
+#'   \item{Y2}{assigns January:March to the previous year}
+#' }
+#' @references PDO: \link{http://research.jisao.washington.edu/pdo/}; AO: \link{http://www.cpc.noaa.gov/products/precip/CWlink/daily_ao_index/ao_index.html}; NAO: \link{https://www.ncdc.noaa.gov/teleconnections/nao/}
+#' @name Oscillations
+#' @docType data
+#' @usage data(Oscillations)
+#' @examples
+#' data(Oscillations)
+#' require(gridExtra)
+#' ggplot.osc <- function(data = Oscillations, var, title = ""){
+#'   ggplot(data %>% mutate(year = factor(year)), 
+#'          aes(year, get(var))) + 
+#'     geom_boxplot() + 
+#'     ggtitle(title) + ylim(-2.5,2.5)
+#' }
+#' 
+#' o <- subset(Oscillations, year >= 1990 & season == "winter") %>% mutate(year = Y2)
+#' pdo <- ggplot.osc(o, "PDO", "Pacific Decadal Oscillation")
+#' ao <- ggplot.osc(o, "AO", "Arctic Oscillation")
+#' nao <- ggplot.osc(o, "NAO", "North Atlantic Oscillation")
+#' grid.arrange(pdo, ao, nao,  nrow = 3)
+NULL
