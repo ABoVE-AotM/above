@@ -35,5 +35,5 @@ Takes a vector of latitudes and longitudes (typically evenly spaced) and a vecto
 
 }
 \seealso{
-createEnvDataRequest, uploadEnvDataRequest
+createEnvDataRequest, uploadEnvDataRequest, createEnvDataDataFrame
 }
