@@ -10,7 +10,7 @@ Description: ...
 License: Unlimited
 Depends: move, magrittr, plyr, lubridate, scales, ggmap, mapproj, XML, RCurl
 Imports:
-    MASS, parallel, survival, nlme, rgdal, marcher, scales, RCurl
+    MASS, parallel, survival, nlme, rgdal, marcher, scales, RCurl, mapproj
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:

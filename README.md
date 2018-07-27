@@ -1,5 +1,5 @@
 ### The `above` R package
-#### authors: Elie Gurarie and collaborators
+#### authors: Elie Gurarie and Peter Mahoney and Scott LaPoint and Sarah Davidson and others
 
 
 

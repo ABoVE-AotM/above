@@ -7,7 +7,7 @@
 ##' @param dt time interval between desired time points. 
 ##' @param savefile whether to save a csv file
 ##' @param fileout name of csv file to save
-##' @seealso createEnvDataRequest, uploadEnvDataRequest
+##' @seealso createEnvDataRequest, uploadEnvDataRequest, createEnvDataDataFrame
 ##' 
 ##' @return Either nothing (if csv file saved) or the character string data frame with correct formatting. 
 ##' @examples 
