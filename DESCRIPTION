@@ -8,10 +8,14 @@ Author: Elie Gurarie, Peter Mahoney, Scott LaPoint and others
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
-Depends: move, magrittr, plyr, lubridate, scales, ggmap, mapproj, XML, RCurl
+Depends: 
+    move, magrittr, plyr, lubridate, scales, ggmap, mapproj, 
+    XML, RCurl, sf, leaflet, raster, mapview, webshot,
+    RStoolbox
 Imports:
     MASS, parallel, survival, nlme, rgdal, marcher, scales, RCurl, mapproj
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:
     knitr
+  
