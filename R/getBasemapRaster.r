@@ -6,7 +6,7 @@
 #' @param map.types Character specification for the base maps. see http://leaflet-extras.github.io/leaflet-providers/preview/ for available options. Favorites include: \code{Esri.WorldPhysical} (default), \code{Esri.WorldTerrain}, \code{Esri.NatGeoWorldMap}
 #' @param filename name of png and html files
 #' @param directory directory to save the htlm and png files
-#' @param zoom a resolution parameter. The default 4 gives approximately a 2000 x 2000 raster, 8 gives a 4000 x 4000, etc. 
+#' @param {width,height} approximate width and height of final raster; this is VERY approximate because the final raster is cropped around the desired limits and because there is some 
 #' @param plotme whether or not to plot the raster with \code{\link{plotRGB}}. Note that high resolution rasters are reduced in rendering within R by default ... this can be modified with \code{\link{plotRGB}} options.  
 #' @param ... Additional paramters to pass to \code{\link{mapview}}
 #' @return An RGB raster, i.e. one with three levels for each of the colors
@@ -24,7 +24,7 @@
 getBasemapRaster <- function(xmin, xmax, ymin, ymax, map.types = "Esri.WorldPhysical",
                               directory = ".", 
                               filename = "basemap",
-                              zoom = 4, 
+                              width = 1000, height = 1000,
                               plotme = TRUE, ...)
 {
   # creating a white rectangular donut
@@ -43,8 +43,8 @@ getBasemapRaster <- function(xmin, xmax, ymin, ymax, map.types = "Esri.WorldPhys
   # create local html  
   mapshot(basemap, url = mapurl)
   # create png from local html
-  webshot(url = mapurl, file = mappng, zoom = zoom)
-  m <- brick(paste0(directory, '/basemap.png'))
+  webshot(url = mapurl, file = mappng, vwidth = width*2, vheight = height*2, zoom = sqrt(width/1000))
+  m <- brick(paste0(directory, '/', filename, '.png'))
   
   # trim off legend and other mapview text at bottom 
   m <- crop(m, extent(0.1 * dim(m)[1],
