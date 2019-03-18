@@ -5,22 +5,23 @@
 \title{getBasemapRaster}
 \usage{
 getBasemapRaster(xmin, xmax, ymin, ymax, map.types = "Esri.WorldPhysical",
-  directory = ".", filename = "basemap", zoom = 4, plotme = TRUE, ...)
+  directory = ".", filename = "basemap", width = 1000, height = 1000,
+  zoom = 1, plotme = TRUE, ...)
 }
 \arguments{
 \item{map.types}{Character specification for the base maps. see http://leaflet-extras.github.io/leaflet-providers/preview/ for available options. Favorites include: \code{Esri.WorldPhysical} (default), \code{Esri.WorldTerrain}, \code{Esri.NatGeoWorldMap}}
 
-\item{directory}{directory to save the htlm and png files}
+\item{directory}{directory to save the html and png files}
 
 \item{filename}{name of png and html files}
 
-\item{zoom}{a resolution parameter. The default 4 gives approximately a 2000 x 2000 raster, 8 gives a 4000 x 4000, etc.}
+\item{zoom}{this is the zoom argument from \code\link{webshot}; it also has some complicated effect on the resolution of the final image.}
 
 \item{plotme}{whether or not to plot the raster with \code{\link{plotRGB}}. Note that high resolution rasters are reduced in rendering within R by default ... this can be modified with \code{\link{plotRGB}} options.}
 
-\item{...}{Additional paramters to pass to \code{\link{mapview}}}
+\item{{xmin, xmax, ymin, ymax}}{Limits (in longitude and latitude) of desired map raster.}
 
-\item{{xmin, }{ymin, xmax, ymax} Limits (in longitude and latitude) of desired map raster.}
+\item{{width, height}}{approximate width and height of final raster; this is VERY approximate because the final raster is cropped around the desired limits and because there is some}
 }
 \value{
 An RGB raster, i.e. one with three levels for each of the colors
@@ -33,7 +34,6 @@ This function obtains an RGB raster from any of the available base maps in the (
 SEalaska.topo <- getBasemapRaster(-138,-130, 56, 60, "OpenTopoMap")
 # for a ggPlot use this function (from RStoolbox): 
 ggRGB(SEalaska.topo, 1, 2, 3, coord_equal = FALSE)
-# DC map, high resolution
-dc.natgeo <- getBasemapRaster(-77.5,-76.5, 38.5, 39.25, "Esri.NatGeoWorldMap", zoom = 8, plotme = FALSE)
-ggRGB(dc.natgeo, 1, 2, 3, coord_equal = FALSE)
+# labeled DC map, high resolution
+dc.natgeo <- getBasemapRaster(-77.5,-76.5, 38.5, 39.25, map.types = "Esri.NatGeoWorldMap", width = 1000, height = 1000, zoom = 8)
 }

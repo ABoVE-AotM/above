@@ -33,10 +33,14 @@ if(is.null(filename)){
   if(year >= 2015)
   rawdata <- paste0("ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/24km/",year,"/ims",year,tripledigit(day),"_24km_v1.3.asc.gz")
   
-  download.file(rawdata, destfile = paste0(tempdir(), "\\snowdata.gz"))
+  destfile <- paste0(tempdir(), "\\snowdata.gz")
+  download.file(rawdata, destfile = destfile)
   
   con <- gzfile(paste0(tempdir(),"\\snowdata.gz"))
   snow <- read.table(con, skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix
+  if(file.remove(destfile)) 
+    cat("Downloaded and deleted temporary file.")
+  
 } else { snow <- read.table(paste0(directory,"/",filename), skip = 30, colClasses = "character",stringsAsFactors = FALSE)[,1] %>% as.matrix }
   
   snow.matrix <- aaply(snow, 1, function(s)
@@ -54,7 +58,7 @@ if(is.null(filename)){
 }
 
 #' @export
-plotSnowData <- function(snow.df, legend = TRUE, axis = TRUE, ...){
+plotSnowData <- function(snow.df, legend = TRUE, axis = TRUE, bor = NA, ...){
   require(mapdata)
   plot.new()
   cols <- c(NA, NA, "forestgreen", "wheat", "white")
@@ -64,7 +68,7 @@ plotSnowData <- function(snow.df, legend = TRUE, axis = TRUE, ...){
   apply(snow.m, 1, function(m) 
     polygon(x = c(m["lon.ll"], m["lon.ul"], m["lon.ur"], m["lon.lr"]), 
             y = c(m["lat.ll"], m["lat.ul"], m["lat.ur"], m["lat.lr"]), 
-            col = cols[Re(m["snow"])+1], ...))
+            col = cols[Re(m["snow"])+1], bor= bor, ...))
      
   maps::map("worldHires", add = TRUE, col=grey(.3))
   box(lwd = 2)
