@@ -35,5 +35,5 @@ SEalaska.topo <- getBasemapRaster(-138,-130, 56, 60, "OpenTopoMap")
 ggRGB(SEalaska.topo, 1, 2, 3, coord_equal = FALSE)
 # DC map, high resolution
 dc.natgeo <- getBasemapRaster(-77.5,-76.5, 38.5, 39.25, "Esri.NatGeoWorldMap", zoom = 8, plotme = FALSE)
-ggRGB(dc.topo, 1, 2, 3, coord_equal = FALSE)
+ggRGB(dc.natgeo, 1, 2, 3, coord_equal = FALSE)
 }

@@ -44,7 +44,7 @@ getBasemapRaster <- function(xmin, xmax, ymin, ymax, map.types = "Esri.WorldPhys
   mapshot(basemap, url = mapurl)
   # create png from local html
   webshot(url = mapurl, file = mappng, zoom = zoom)
-  m <- brick(paste0(directory, '/basemap.png'))
+  m <- brick(paste0(directory, '/', filename, '.png'))
   
   # trim off legend and other mapview text at bottom 
   m <- crop(m, extent(0.1 * dim(m)[1],
