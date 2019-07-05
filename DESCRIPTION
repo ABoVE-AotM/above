@@ -10,11 +10,11 @@ Description: ...
 License: Unlimited
 Depends: 
     move, magrittr, plyr, lubridate, scales, ggmap, mapproj, 
-    XML, RCurl, sf, leaflet, raster, mapview, webshot,
-    RStoolbox
+    XML, RCurl, sf, leaflet, raster, mapview, webshot
 Imports:
     MASS, parallel, survival, nlme, rgdal, marcher, scales, RCurl, mapproj
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests:
-    knitr
+    knitr,
+    RStoolbox

@@ -5,8 +5,8 @@
 \title{process Move data}
 \usage{
 processMovedata(movedata, xyNames = c("location_long", "location_lat"),
-  idcolumn = "individual_id", proj4 = NULL, projTo = NULL, utm = FALSE,
-  keepCols = NULL, dailymean = FALSE)
+  idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
+  utm = FALSE, keepCols = NULL, dailymean = FALSE)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}

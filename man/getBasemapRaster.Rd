@@ -4,9 +4,10 @@
 \alias{getBasemapRaster}
 \title{getBasemapRaster}
 \usage{
-getBasemapRaster(xmin, xmax, ymin, ymax, map.types = "Esri.WorldPhysical",
-  directory = ".", filename = "basemap", width = 1000, height = 1000,
-  zoom = 1, plotme = TRUE, ...)
+getBasemapRaster(xmin, xmax, ymin, ymax,
+  map.types = "Esri.WorldPhysical", directory = ".",
+  filename = "basemap", width = 1000, height = 1000, zoom = 1,
+  plotme = TRUE, ...)
 }
 \arguments{
 \item{map.types}{Character specification for the base maps. see http://leaflet-extras.github.io/leaflet-providers/preview/ for available options. Favorites include: \code{Esri.WorldPhysical} (default), \code{Esri.WorldTerrain}, \code{Esri.NatGeoWorldMap}}

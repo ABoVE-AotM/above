@@ -4,8 +4,8 @@
 \alias{lio.clogit}
 \title{Leave-individuals-out for SSF}
 \usage{
-lio.clogit(dat, form, thin = NULL, cluster = "ID_year", ID = "AnimalID",
-  inPar = TRUE, ncores = NULL)
+lio.clogit(dat, form, thin = NULL, cluster = "ID_year",
+  ID = "AnimalID", inPar = TRUE, ncores = NULL)
 }
 \arguments{
 \item{dat}{a movetrack object with pseudo-absences points (.e., available; Used = 0) and used points (Used = 1) stratified by step and annotated with representative covariates.}
