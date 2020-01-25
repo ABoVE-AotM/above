@@ -3,8 +3,8 @@ Type: Package
 Title: Functions and methods for the Animals on the Move project of the Arctic
     Boreal Vulnerability Experiment (ABoVE - NASA).
 Version: 0.11
-Date: 2016-01-22
-Author: Elie Gurarie, Peter Mahoney, Scott LaPoint and others
+Date: 2018-01-22
+Author: Elie Gurarie, Peter Mahoney, Scott LaPoint, Sarah Davidson
 Maintainer: <egurarie@umd.edu>
 Description: ...
 License: Unlimited
