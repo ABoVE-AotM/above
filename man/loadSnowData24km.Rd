@@ -4,8 +4,16 @@
 \alias{loadSnowData24km}
 \title{NSIDC Snow Model Functions}
 \usage{
-loadSnowData24km(year, day, filename = NULL, directory = ".",
-  plot = FALSE, northamerica = TRUE, water = FALSE, ...)
+loadSnowData24km(
+  year,
+  day,
+  filename = NULL,
+  directory = ".",
+  plot = FALSE,
+  northamerica = TRUE,
+  water = FALSE,
+  ...
+)
 }
 \arguments{
 \item{plot}{whether to plot the map.}
@@ -34,7 +42,7 @@ a data frame that contains:
 This function downloads 24km x 24km snow ice data from the NSIDS repository (\link{ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02156/}) and processes the data.  An additonal function \code{plotSnowData} conveniently maps the output.
 }
 \examples{
-#  The output is equivalent to the saved examples in \\code{\\link{snow24km}}
+#  The output is equivalent to the saved examples in \code{\link{snow24km}}
 snow.data <- loadSnowData24km(2011, 16)
 plotSnowData(snow.data); title("Jan 16, 2011")
 

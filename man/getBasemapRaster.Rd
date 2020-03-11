@@ -4,10 +4,20 @@
 \alias{getBasemapRaster}
 \title{getBasemapRaster}
 \usage{
-getBasemapRaster(xmin, xmax, ymin, ymax,
-  map.types = "Esri.WorldPhysical", directory = ".",
-  filename = "basemap", width = 1000, height = 1000, zoom = 1,
-  plotme = TRUE, ...)
+getBasemapRaster(
+  xmin,
+  xmax,
+  ymin,
+  ymax,
+  map.types = "Esri.WorldPhysical",
+  directory = ".",
+  filename = "basemap",
+  width = 1000,
+  height = 1000,
+  zoom = 1,
+  plotme = TRUE,
+  ...
+)
 }
 \arguments{
 \item{map.types}{Character specification for the base maps. see http://leaflet-extras.github.io/leaflet-providers/preview/ for available options. Favorites include: \code{Esri.WorldPhysical} (default), \code{Esri.WorldTerrain}, \code{Esri.NatGeoWorldMap}}
@@ -16,7 +26,7 @@ getBasemapRaster(xmin, xmax, ymin, ymax,
 
 \item{filename}{name of png and html files}
 
-\item{zoom}{this is the zoom argument from \code\link{webshot}; it also has some complicated effect on the resolution of the final image.}
+\item{zoom}{this is the zoom argument from \code{\link{webshot}}; it also has some complicated effect on the resolution of the final image.}
 
 \item{plotme}{whether or not to plot the raster with \code{\link{plotRGB}}. Note that high resolution rasters are reduced in rendering within R by default ... this can be modified with \code{\link{plotRGB}} options.}
 

@@ -4,9 +4,16 @@
 \alias{processMovedata}
 \title{process Move data}
 \usage{
-processMovedata(movedata, xyNames = c("location_long", "location_lat"),
-  idcolumn = "individual_id", proj4 = NULL, projTo = NULL,
-  utm = FALSE, keepCols = NULL, dailymean = FALSE)
+processMovedata(
+  movedata,
+  xyNames = c("location_long", "location_lat"),
+  idcolumn = "individual_id",
+  proj4 = NULL,
+  projTo = NULL,
+  utm = FALSE,
+  keepCols = NULL,
+  dailymean = FALSE
+)
 }
 \arguments{
 \item{movedata}{movement data - can be a \code{Move} object (or stack) from movebank}
@@ -18,10 +25,6 @@ processMovedata(movedata, xyNames = c("location_long", "location_lat"),
 \item{projTo}{a crs string for (re)projecting input data (if \code{utm} is FALSE).}
 
 \item{utm}{whether to convert to UTM coordinates - using the central longitude to select the zone.  This is best for data of relatively small extent.}
-
-\item{keepCols}{vector of column names to retain in output (e.g., c('deployment_id', 'sex')).  Or - if "all" - keep all columns.}
-
-\item{dailymean}{whether or not to compute the daily mean - useful for long term  migration analysis. Note - you can't "keep columns" with the automated daily mean, the output is a simplified data frame with id, x, y, lon, lat, day, day.date}
 
 \item{keepCols}{scd: to see available info to retain see the reference data for the study using getMovebank("tag"), getMovebank("individual"), getMovebank("deployment"), or IMO better to get all of it as a single table excluding unused attributes by downloading from Movebank (Download > Download Reference Data).}
 

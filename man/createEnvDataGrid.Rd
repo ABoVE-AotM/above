@@ -4,8 +4,15 @@
 \alias{createEnvDataGrid}
 \title{Create gridded data for querying Movebank Env-Data}
 \usage{
-createEnvDataGrid(lats, lons, start, finish = start, dt = 0,
-  savefile = TRUE, fileout = NULL)
+createEnvDataGrid(
+  lats,
+  lons,
+  start,
+  finish = start,
+  dt = 0,
+  savefile = TRUE,
+  fileout = NULL
+)
 }
 \arguments{
 \item{dt}{time interval between desired time points.}

@@ -7,7 +7,7 @@
 #' @param filename name of png and html files
 #' @param directory directory to save the html and png files
 #' @param {width,height} approximate width and height of final raster; this is VERY approximate because the final raster is cropped around the desired limits and because there is some 
-#' @param zoom this is the zoom argument from \code\link{webshot}; it also has some complicated effect on the resolution of the final image.
+#' @param zoom this is the zoom argument from \code{\link{webshot}}; it also has some complicated effect on the resolution of the final image.
 #' @param plotme whether or not to plot the raster with \code{\link{plotRGB}}. Note that high resolution rasters are reduced in rendering within R by default ... this can be modified with \code{\link{plotRGB}} options.  
 #' @return An RGB raster, i.e. one with three levels for each of the colors
 #' @export

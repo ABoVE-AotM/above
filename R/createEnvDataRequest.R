@@ -8,7 +8,7 @@
 #' @param email email address for notification 
 #' @param savefile whether or not to save a file (for actual use, must be TRUE)
 #' @param fileout a file name - will be prompted if left empty
-#' @return a \code\link{XMLNode} object which enters the request infromation onto the online EnvData form. 
+#' @return a \code{\link{XMLNode}} object which enters the request infromation onto the online EnvData form. 
 #' @export
 #' @seealso createEnvDataGrid, uploadEnvDataRequest
 #' @examples 

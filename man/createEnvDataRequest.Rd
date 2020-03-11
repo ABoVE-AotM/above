@@ -4,9 +4,16 @@
 \alias{createEnvDataRequest}
 \title{Creates EnvData XML query}
 \usage{
-createEnvDataRequest(request_name = "MyRequest", type_name,
-  variable_name, interpolation_type, dist_func_spatial = "geodetic",
-  email = "me@my.place", savefile = TRUE, fileout = NULL)
+createEnvDataRequest(
+  request_name = "MyRequest",
+  type_name,
+  variable_name,
+  interpolation_type,
+  dist_func_spatial = "geodetic",
+  email = "me@my.place",
+  savefile = TRUE,
+  fileout = NULL
+)
 }
 \arguments{
 \item{request_name}{Name for request}
@@ -26,7 +33,7 @@ createEnvDataRequest(request_name = "MyRequest", type_name,
 \item{fileout}{a file name - will be prompted if left empty}
 }
 \value{
-a \code\link{XMLNode} object which enters the request infromation onto the online EnvData form.
+a \code{\link{XMLNode}} object which enters the request infromation onto the online EnvData form.
 }
 \description{
 Creates EnvData XML query
