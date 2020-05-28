@@ -26,19 +26,30 @@ getBasemapRaster(
 
 \item{filename}{name of png and html files}
 
-\item{zoom}{this is the zoom argument from \code{\link{webshot}}; it also has some complicated effect on the resolution of the final image.}
+\item{zoom}{this is the zoom argument from \code{\link{webshot}}; it also has some complicated 
+effect on the resolution of the final image.}
 
-\item{plotme}{whether or not to plot the raster with \code{\link{plotRGB}}. Note that high resolution rasters are reduced in rendering within R by default ... this can be modified with \code{\link{plotRGB}} options.}
+\item{plotme}{whether or not to plot the raster with \code{\link{plotRGB}}. Note that high 
+resolution rasters are reduced in rendering within R by default ... this can be modified 
+with \code{\link{plotRGB}} options.}
 
 \item{{xmin, xmax, ymin, ymax}}{Limits (in longitude and latitude) of desired map raster.}
 
-\item{{width, height}}{approximate width and height of final raster; this is VERY approximate because the final raster is cropped around the desired limits and because there is some}
+\item{{width, height}}{approximate width and height of final raster; this is VERY approximate 
+because the final raster is cropped around the desired limits and because there is some}
 }
 \value{
-An RGB raster, i.e. one with three levels for each of the colors
+An RGB raster, i.e. one with three levels for each of the colors. Note, the projection of the returned raster 
+is the Spherical Mercator (EPSG:3857) - used for global tiling and "native" to mapview (and leaflet).
 }
 \description{
-This function obtains an RGB raster from any of the available base maps in the (incredible!) open source leaflet package.  It is meant to replace - in a way - the \code{\link{ggmap}} function, which now requires an API key with Google.  It is in some ways more flexible: you can set the lat and long limits strictly, it returns a projected raster which can be reprojected to any other resolution, and it can access any of the remarkable diversity of high quality mapping option at:  http://leaflet-extras.github.io/leaflet-providers/preview/.  Note that it creates a "png" and "html" and places it in a given directory, and does not delete them.
+This function obtains an RGB raster from any of the available base maps in the (incredible!) 
+open source leaflet package.  It is meant to replace - in a way - the \code{\link{ggmap}} 
+function, which now requires an API key with Google.  It is in some ways more flexible: you 
+can set the lat and long limits strictly, it returns a projected raster which can be reprojected 
+to any other resolution, and it can access any of the remarkable diversity of high quality 
+mapping option at:  http://leaflet-extras.github.io/leaflet-providers/preview/.  Note that it 
+creates a "png" and "html" and places it in a given directory, and does not delete them.
 }
 \examples{
 # SE Alaska
